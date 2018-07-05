@@ -2,16 +2,27 @@ package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtils;
+
+import java.io.IOException;
+import java.net.URL;
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int MOVIE_API_LOADER_ID = 323272;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, MainActivity.this);
     }
 
     @Override
@@ -52,5 +65,54 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<String> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<String>(this) {
+
+            private String mMovieData;
+
+            @Override
+            protected void onStartLoading() {
+                if(mMovieData != null)
+                    deliverResult(mMovieData);
+                else
+                    forceLoad();
+            }
+
+            @Override
+            public void deliverResult(String data) {
+                mMovieData = data;
+                super.deliverResult(data);
+            }
+
+            @Override
+            public String loadInBackground() {
+                URL apiURL = NetworkUtils.getMoviesUrl(MainActivity.this);
+
+                try {
+                    String popularMovies = NetworkUtils.getResponseFromHttpUrl(apiURL);
+                    Log.v(TAG, "Popular Movies: " + popularMovies);
+                    return popularMovies;
+                } catch (IOException e) {
+                    Log.e(TAG, e.getStackTrace().toString());
+                    return null;
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        if(data != null) {
+            Log.v(TAG, data);
+            //TODO: Set future adapter and/or update UI for errors.
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        //TODO: What should be done on reset?
     }
 }
