@@ -44,10 +44,9 @@ public class NetworkUtils {
         //Else if B, do Y
 
         try {
-            URL movieDBQuery = new URL(movieDB.toString());
-            return movieDBQuery;
+            return new URL(movieDB.toString());
         } catch (MalformedURLException e) {
-            Log.e(TAG, e.getStackTrace().toString());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
             return null;
         }
