@@ -22,6 +22,7 @@ import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtil
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        //getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, MainActivity.this);
+        getSupportLoaderManager().initLoader(MOVIE_API_LOADER_ID, null, MainActivity.this);
         //TODO: Restore supportLoaderManager once no longer in offline mode.
         httpResultString = placeHolderPopular;
         JSONObject parsedObject = JSONUtils.parseStringToJSON(httpResultString);
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //TODO: Remove temporary immediate intent to MovieDetailsACtivity.
         Intent launchDetailsActivity = new Intent(this, MovieDetailsActivity.class);
         launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, currentMovies[5]);
-        startActivity(launchDetailsActivity);
+        //startActivity(launchDetailsActivity);
     }
 
     @Override
@@ -89,44 +90,52 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+    private static class MovieLoader extends AsyncTaskLoader<String> {
+
+        private WeakReference<MainActivity> mainActivity;
+        private String mMovieData;
+
+        MovieLoader(MainActivity mainActivity) {
+            super(mainActivity);
+            this.mainActivity = new WeakReference<>(mainActivity);
+        }
+
+        @Override
+        protected void onStartLoading() {
+            if(mMovieData != null)
+                deliverResult(mMovieData);
+            else
+                forceLoad();
+        }
+
+        @Override
+        public void deliverResult(String data) {
+            mMovieData = data;
+            super.deliverResult(data);
+        }
+
+        @Override
+        public String loadInBackground() {
+            URL apiURL = NetworkUtils.getMoviesUrl(mainActivity.get());
+
+            if(apiURL == null)
+                return null;
+
+            try {
+                httpResultString = NetworkUtils.getResponseFromHttpUrl(apiURL);
+                Log.v(TAG, "Popular Movies: " + httpResultString);
+                return httpResultString;
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            }
+        }
+    }
+
     @NonNull
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<String>(this) {
-
-            private String mMovieData;
-
-            @Override
-            protected void onStartLoading() {
-                if(mMovieData != null)
-                    deliverResult(mMovieData);
-                else
-                    forceLoad();
-            }
-
-            @Override
-            public void deliverResult(String data) {
-                mMovieData = data;
-                super.deliverResult(data);
-            }
-
-            @Override
-            public String loadInBackground() {
-                URL apiURL = NetworkUtils.getMoviesUrl(MainActivity.this);
-
-                if(apiURL == null)
-                    return null;
-
-                try {
-                    httpResultString = NetworkUtils.getResponseFromHttpUrl(apiURL);
-                    Log.v(TAG, "Popular Movies: " + httpResultString);
-                    return httpResultString;
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage());
-                    return null;
-                }
-            }
-        };
+        return new MovieLoader(MainActivity.this);
     }
 
     @Override
