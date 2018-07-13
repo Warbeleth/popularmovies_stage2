@@ -52,6 +52,14 @@ public class NetworkUtils {
         }
     }
 
+    public static Uri getPosterUri(Context context, String posterPath) {
+        Uri posterCDN = Uri.parse(imageTMDBBaseURL + imageSizeParameter + posterPath)
+                .buildUpon()
+                .build();
+
+        return posterCDN;
+    }
+
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
