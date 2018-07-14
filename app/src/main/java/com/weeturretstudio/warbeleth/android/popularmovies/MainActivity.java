@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
@@ -62,9 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //TODO: Implement touch input and thumbnails for the movies returned.
         //TODO: Remove temporary immediate intent to MovieDetailsACtivity.
-        //Intent launchDetailsActivity = new Intent(this, MovieDetailsActivity.class);
-        //launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, currentMovies[5]);
-        //startActivity(launchDetailsActivity);
     }
 
     @Override
@@ -159,6 +157,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             GridView gridView = (GridView)MainActivity.this.findViewById(R.id.main_gridview);
             gridView.setAdapter(movieAdapter);
+
+            //Generate onItemClick listener to handle clicks
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    MovieDetails nestedDetails = (MovieDetails)parent.getItemAtPosition(position);
+                    Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
+                    launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
+                    startActivity(launchDetailsActivity);
+                }
+            });
         }
     }
 
