@@ -27,7 +27,7 @@ public class MovieDetailsArrayAdapter extends ArrayAdapter<MovieDetails> {
 
         ImageView thumbnail = (ImageView)convertView;
         Picasso.with(getContext()).load(
-                NetworkUtils.getPosterUri(getContext(), movieDetails.gePosterPath()))
+                NetworkUtils.getPosterUri(getContext(), movieDetails.getPosterPath()))
                 .into(thumbnail);
 
         return convertView;

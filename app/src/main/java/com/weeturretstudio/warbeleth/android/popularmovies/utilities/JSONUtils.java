@@ -58,7 +58,7 @@ public class JSONUtils {
                 movieData[i].setPosterPath(currentMovie.getString(KEY_JSON_POSTER_PATH));
                 movieData[i].setReleaseDate(currentMovie.getString(KEY_JSON_RELEASE_DATE));
                 movieData[i].setOverview(currentMovie.getString(KEY_JSON_OVERVIEW));
-                movieData[i].setRating(currentMovie.getDouble(KEY_JSON_RATING));
+                movieData[i].setRating(currentMovie.getString(KEY_JSON_RATING));
             }
 
             return movieData;

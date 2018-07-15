@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
@@ -60,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 MOVIE_API_LOADER_ID,
                 null,
                 MainActivity.this);
-
-        //TODO: Implement touch input and thumbnails for the movies returned.
-        //TODO: Remove temporary immediate intent to MovieDetailsACtivity.
     }
 
     @Override
@@ -141,9 +137,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         if(data != null) {
             Log.v(TAG, data);
-            //TODO: Set future adapter and/or update UI for errors.
 
-            //TODO: Restore supportLoaderManager once no longer in offline mode.
             //httpResultString = placeHolderPopular;
             JSONObject parsedObject = JSONUtils.parseStringToJSON(data);
             currentMovies = JSONUtils.parseMovies(parsedObject);

@@ -11,16 +11,17 @@ public class MovieDetails implements Parcelable {
     private String mPosterPath;     //poster_path
     private String mOverview;       //overview
     private String mReleaseDate;    //release_date
-    private Number mRating;         //vote_average
+    private String mRating;         //vote_average
 
     public MovieDetails(){}
 
-    public MovieDetails(int id, String name, String poster, String overview, String releaseDate) {
+    public MovieDetails(int id, String name, String poster, String overview, String releaseDate, String rating) {
         mID = id;
         mMovieName = name;
         mPosterPath = poster;
         mOverview = overview;
         mReleaseDate = releaseDate;
+        mRating = rating;
     }
 
     protected MovieDetails(Parcel in) {
@@ -29,6 +30,7 @@ public class MovieDetails implements Parcelable {
         mPosterPath = in.readString();
         mOverview = in.readString();
         mReleaseDate = in.readString();
+        mRating = in.readString();
     }
 
     public static final Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
@@ -59,7 +61,7 @@ public class MovieDetails implements Parcelable {
         this.mMovieName = mMovieName;
     }
 
-    public String gePosterPath() {
+    public String getPosterPath() {
         return mPosterPath;
     }
 
@@ -83,11 +85,11 @@ public class MovieDetails implements Parcelable {
         this.mReleaseDate = mReleaseDate;
     }
 
-    public Number getRating() {
+    public String getRating() {
         return mRating;
     }
 
-    public void setRating(Number mRating) {
+    public void setRating(String mRating) {
         this.mRating = mRating;
     }
 
@@ -103,6 +105,7 @@ public class MovieDetails implements Parcelable {
         dest.writeString(mPosterPath);
         dest.writeString(mOverview);
         dest.writeString(mReleaseDate);
+        dest.writeString(mRating);
     }
 
     @Override
@@ -111,6 +114,7 @@ public class MovieDetails implements Parcelable {
                 "Title: " + mMovieName + "\n" +
                 "PosterPath: " + mPosterPath + "\n" +
                 "Overview: " + mOverview + "\n" +
-                "Release Date: " + mReleaseDate + "\n");
+                "Release Date: " + mReleaseDate + "\n" +
+                "Rating: " + mRating + "\n");
     }
 }
