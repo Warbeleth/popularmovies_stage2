@@ -1,7 +1,6 @@
 package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.Intent;
-import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,16 +40,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     ((TextView)findViewById(R.id.tv_details_movie_title)).setText(selectedMovie.getMovieName());
 
                 if(selectedMovie.getReleaseDate() != null)
-                    ((TextView)findViewById(R.id.tv_details_release_date)).setText(selectedMovie.getReleaseDate());
+                    ((TextView)findViewById(R.id.tv_details_release_date_value)).setText(selectedMovie.getReleaseDate());
 
                 if(selectedMovie.getRating() != null)
-                    ((TextView)findViewById(R.id.tv_details_rating)).setText(selectedMovie.getRating());
+                    ((TextView)findViewById(R.id.tv_details_rating_value)).setText(selectedMovie.getRating());
 
                 if(selectedMovie.getOverview() != null)
-                    ((TextView)findViewById(R.id.tv_ml_details_overview)).setText(selectedMovie.getOverview());
+                    ((TextView)findViewById(R.id.tv_ml_details_overview_value)).setText(selectedMovie.getOverview());
 
                 if(selectedMovie.getPosterPath() != null)
                     Picasso.with(this).load(NetworkUtils.getPosterUri(this, selectedMovie.getPosterPath()))
+                        .fit()
+                        .centerInside()
                         .into(((ImageView)findViewById(R.id.iv_details_movie_poster)));
             }
         }
