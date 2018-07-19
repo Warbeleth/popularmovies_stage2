@@ -3,11 +3,13 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="sortByPopularMovies"
-        android:summaryOn="Sort by Popularity"
+        android:summaryOn="Sorted by Popularity"
+        android:summaryOff="Sort by Popularity"
         android:title="Popularity"/>
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="sortByTopRatedMovies"
-        android:summaryOn="Sort by Top Rated"
+        android:summaryOn="Sorted by Top Rated"
+        android:summaryOff="Sort by Top Rated"
         android:title="Top Rated"/>
 </PreferenceScreen>
