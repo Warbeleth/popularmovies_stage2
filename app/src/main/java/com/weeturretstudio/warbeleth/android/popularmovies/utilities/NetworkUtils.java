@@ -1,8 +1,14 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.utilities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.weeturretstudio.warbeleth.android.popularmovies.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,12 +37,18 @@ public class NetworkUtils {
     // For most phones we recommend using “w185”.
     private static final String imageSizeParameter = "w185";
     //Full Example URL:
-    // http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
+    // http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
     // Reference: https://developers.themoviedb.org/3/configuration/get-api-configuration
 
     public static URL getMoviesUrl(Context context) {
-        //TODO: Add conditional logic to sort based on User Setting: Popular || Top_Rated
-        Uri movieDB = Uri.parse(theMovieDBBaseURL + theMovieDBPopularURL).buildUpon()
+        boolean sortByPopularity = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+                context.getString(R.string.key_popularmovies),
+                context.getResources().getBoolean(R.bool.preference_PopularMovies_Default));
+
+
+        Uri movieDB = Uri.parse(theMovieDBBaseURL +
+                ((sortByPopularity) ? theMovieDBPopularURL : theMovieDBTopRatedURL))
+                .buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, API_KEY_TheMovieDB)
                 .build();
         //If A, do X
@@ -60,7 +72,13 @@ public class NetworkUtils {
         return posterCDN;
     }
 
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    public static String getResponseFromHttpUrl(Context context, URL url) throws IOException {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+
+        if(info == null || !info.isConnectedOrConnecting())
+            return null;
+
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();

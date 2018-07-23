@@ -1,6 +1,7 @@
 package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +31,8 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 323272;
@@ -59,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 MOVIE_API_LOADER_ID,
                 null,
                 MainActivity.this);
+
+        // Register the listener
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -83,6 +90,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        getSupportLoaderManager().restartLoader(
+                MOVIE_API_LOADER_ID,
+                null,
+                MainActivity.this);
     }
 
     private static class MovieLoader extends AsyncTaskLoader<String> {
@@ -117,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return null;
 
             try {
-                httpResultString = NetworkUtils.getResponseFromHttpUrl(apiURL);
+                httpResultString = NetworkUtils.getResponseFromHttpUrl(getContext(), apiURL);
                 Log.v(TAG, "Popular Movies: " + httpResultString);
                 return httpResultString;
             } catch (IOException e) {

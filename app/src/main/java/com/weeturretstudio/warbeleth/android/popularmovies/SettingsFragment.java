@@ -2,6 +2,7 @@ package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.Preference;
@@ -9,6 +10,10 @@ import android.util.Log;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
+
+    private CheckBoxPreference mPopularMovies = null;
+    private CheckBoxPreference mTopRatedMovies = null;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.movie_type_preference);
@@ -18,6 +23,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         //int count = prefScreen.getPreferenceCount();
 
         //If we weren't using checkboxes, we'd iterate over the preferences like we did in lesson 6.10
+
+        mPopularMovies = (CheckBoxPreference)getPreferenceManager().findPreference(getString(R.string.key_popularmovies));
+        mTopRatedMovies = (CheckBoxPreference)getPreferenceManager().findPreference(getString(R.string.key_topratedmovies));
     }
 
     @Override
@@ -29,13 +37,21 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
             //Update summary
             if(preference instanceof CheckBoxPreference) {
                 Log.v("Temp", "Key: " + preference.getKey() + " Value: " + preference.toString());
+
+                if(preference.getKey().equals(getString(R.string.key_popularmovies)) && mPopularMovies.isChecked())
+                    mTopRatedMovies.setChecked(false);
+
+                if(preference.getKey().equals(getString(R.string.key_topratedmovies)) && mTopRatedMovies.isChecked())
+                    mPopularMovies.setChecked(false);
             }
         }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        return false;
+        Log.v("TAG", "Preference: " + preference.toString() + " New Value: " + newValue.toString());
+
+        return true;
     }
 
     @Override

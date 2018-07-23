@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="preference_PopularMovies_Default">true</bool>
+    <bool name="preference_TopRatedMovies_Default">false</bool>
+</resources>
