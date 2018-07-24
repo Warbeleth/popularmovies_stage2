@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:adjustViewBounds="true"
     android:scaleType="fitXY"
-    android:id="@+id/image_thumbnail">
+    android:id="@+id/image_thumbnail"
+    android:contentDescription="@string/movie_thumbnail_MoviePoster">
 
 </ImageView>

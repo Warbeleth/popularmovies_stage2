@@ -21,12 +21,6 @@ public class JSONUtils {
     private static final String KEY_JSON_RELEASE_DATE = "release_date";
     private static final String KEY_JSON_RATING = "vote_average";
 
-    private enum MOVIEDB_RESULT_OPTIONS { vote_count, id, video, vote_Average,
-                                            title, popularity, poster_path, original_language,
-                                            original_title, genre_ids, backdrop_path, adult,
-                                            overview, release_date }
-
-
     public static JSONObject parseStringToJSON(String jsonString) {
         JSONObject result = null;
         try {
@@ -40,9 +34,6 @@ public class JSONUtils {
 
     public static MovieDetails[] parseMovies(JSONObject parseMe) {
         Log.v(TAG, "parseMovies: " + parseMe.toString());
-        //TODO: Implement JSON parsing logic.
-        if (parseMe == null)
-            return null;
 
         try {
             JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);

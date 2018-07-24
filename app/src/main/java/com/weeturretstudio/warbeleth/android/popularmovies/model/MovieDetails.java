@@ -24,7 +24,7 @@ public class MovieDetails implements Parcelable {
         mRating = rating;
     }
 
-    protected MovieDetails(Parcel in) {
+    private MovieDetails(Parcel in) {
         mID = in.readInt();
         mMovieName = in.readString();
         mPosterPath = in.readString();

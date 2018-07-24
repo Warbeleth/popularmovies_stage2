@@ -1,6 +1,7 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,20 @@ public class MovieDetailsArrayAdapter extends ArrayAdapter<MovieDetails> {
         super(context, 0, movieDetails);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @Override
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         MovieDetails movieDetails = getItem(position);
 
         if(convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_thumbnail, parent, false);
 
         ImageView thumbnail = (ImageView)convertView;
-        Picasso.with(getContext()).load(
-                NetworkUtils.getPosterUri(getContext(), movieDetails.getPosterPath()))
-                .into(thumbnail);
+        if (movieDetails != null) {
+            Picasso.with(getContext()).load(
+                    NetworkUtils.getPosterUri(movieDetails.getPosterPath()))
+                    .into(thumbnail);
+        }
 
         return convertView;
     }

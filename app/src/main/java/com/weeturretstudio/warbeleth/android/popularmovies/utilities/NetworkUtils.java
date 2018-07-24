@@ -1,7 +1,6 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.utilities;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -64,16 +63,17 @@ public class NetworkUtils {
         }
     }
 
-    public static Uri getPosterUri(Context context, String posterPath) {
-        Uri posterCDN = Uri.parse(imageTMDBBaseURL + imageSizeParameter + posterPath)
+    public static Uri getPosterUri(String posterPath) {
+        return Uri.parse(imageTMDBBaseURL + imageSizeParameter + posterPath)
                 .buildUpon()
                 .build();
-
-        return posterCDN;
     }
 
     public static String getResponseFromHttpUrl(Context context, URL url) throws IOException {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(cm == null)
+            return null;
+
         NetworkInfo info = cm.getActiveNetworkInfo();
 
         if(info == null || !info.isConnectedOrConnecting())
