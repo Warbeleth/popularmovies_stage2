@@ -12,6 +12,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
     private CheckBoxPreference mPopularMovies = null;
     private CheckBoxPreference mTopRatedMovies = null;
+    private CheckBoxPreference mFavoriteMovies = null;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -25,6 +26,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 
         mPopularMovies = (CheckBoxPreference)getPreferenceManager().findPreference(getString(R.string.key_popularmovies));
         mTopRatedMovies = (CheckBoxPreference)getPreferenceManager().findPreference(getString(R.string.key_topratedmovies));
+        mFavoriteMovies = (CheckBoxPreference)getPreferenceManager().findPreference(getString(R.string.key_favoritemovies));
     }
 
     @Override
@@ -37,11 +39,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
             if(preference instanceof CheckBoxPreference) {
                 Log.v("Temp", "Key: " + preference.getKey() + " Value: " + preference.toString());
 
-                if(preference.getKey().equals(getString(R.string.key_popularmovies)) && mPopularMovies.isChecked())
+                if(preference.getKey().equals(getString(R.string.key_popularmovies)) && mPopularMovies.isChecked()) {
                     mTopRatedMovies.setChecked(false);
+                    mFavoriteMovies.setChecked(false);
+                }
 
-                if(preference.getKey().equals(getString(R.string.key_topratedmovies)) && mTopRatedMovies.isChecked())
+                if(preference.getKey().equals(getString(R.string.key_topratedmovies)) && mTopRatedMovies.isChecked()) {
                     mPopularMovies.setChecked(false);
+                    mFavoriteMovies.setChecked(false);
+                }
+
+                if (preference.getKey().equals(getString(R.string.key_favoritemovies)) && mFavoriteMovies.isChecked()) {
+                    mTopRatedMovies.setChecked(false);
+                    mPopularMovies.setChecked(false);
+                }
             }
         }
     }

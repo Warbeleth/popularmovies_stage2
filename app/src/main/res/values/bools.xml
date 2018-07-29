@@ -2,4 +2,5 @@
 <resources>
     <bool name="preference_PopularMovies_Default">true</bool>
     <bool name="preference_TopRatedMovies_Default">false</bool>
+    <bool name="preference_FavoriteMovies_Default">false</bool>
 </resources>

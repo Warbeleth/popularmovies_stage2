@@ -45,6 +45,8 @@ public class NetworkUtils {
                 context.getResources().getBoolean(R.bool.preference_PopularMovies_Default));
 
 
+        //TODO: We will be implementing a third option, that is locally stored: 'Favorites'.
+        // These favorites will need an alternate input form, or to not even use the network.
         Uri movieDB = Uri.parse(theMovieDBBaseURL +
                 ((sortByPopularity) ? theMovieDBPopularURL : theMovieDBTopRatedURL))
                 .buildUpon()
