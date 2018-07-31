@@ -27,7 +27,6 @@
 
         <ImageView
             android:id="@+id/iv_details_movie_poster"
-            android:contentDescription="@string/movie_thumbnail_MoviePoster"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
@@ -35,6 +34,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_thumbnail_MoviePoster"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline"
             app:layout_constraintEnd_toStartOf="@+id/vertical_guideline"
@@ -126,6 +126,7 @@
             android:id="@+id/tv_ml_details_overview_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
@@ -134,6 +135,7 @@
             android:singleLine="false"
             android:text="@string/placeholder_movie_overview"
             android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/horizontal_guideline_videos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +154,54 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".45" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/horizontal_guideline_videos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin=".6" />
+
+        <HorizontalScrollView
+            android:id="@+id/Trailers_ScrollView"
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ml_details_overview_value">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+        </HorizontalScrollView>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin=".75" />
+
+        <ScrollView
+            android:id="@+id/Reviews_Scrollview"
+            android:layout_height="50"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
