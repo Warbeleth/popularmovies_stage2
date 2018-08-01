@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.weeturretstudio.warbeleth.android.popularmovies.R;
+import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +30,8 @@ public class NetworkUtils {
     private static final String theMovieDBBaseURL = "http://api.themoviedb.org/3/movie";
     private static final String theMovieDBPopularURL = "/popular";
     private static final String theMovieDBTopRatedURL = "/top_rated";
+    private static final String theMovieDBReviewsURL = "/reviews";
+    private static final String theMovieDBVideosURL = "/videos";
 
     //TheMovieDB CDN: Base + configuration URLs
     private static final String imageTMDBBaseURL = "http://image.tmdb.org/t/p/";
@@ -44,7 +47,6 @@ public class NetworkUtils {
                 context.getString(R.string.key_popularmovies),
                 context.getResources().getBoolean(R.bool.preference_PopularMovies_Default));
 
-
         //TODO: We will be implementing a third option, that is locally stored: 'Favorites'.
         // These favorites will need an alternate input form, or to not even use the network.
         Uri movieDB = Uri.parse(theMovieDBBaseURL +
@@ -52,9 +54,6 @@ public class NetworkUtils {
                 .buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, API_KEY_TheMovieDB)
                 .build();
-        //If A, do X
-
-        //Else if B, do Y
 
         try {
             return new URL(movieDB.toString());
@@ -69,6 +68,38 @@ public class NetworkUtils {
         return Uri.parse(imageTMDBBaseURL + imageSizeParameter + posterPath)
                 .buildUpon()
                 .build();
+    }
+
+    public static URL getReviewsUrl(MovieDetails movie) {
+        Uri movieDB = Uri.parse(theMovieDBBaseURL +
+                movie.getID() + theMovieDBReviewsURL)
+                .buildUpon()
+                .appendQueryParameter(API_KEY_PARAM, API_KEY_TheMovieDB)
+                .build();
+
+        try {
+            return new URL(movieDB.toString());
+        } catch (MalformedURLException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static URL getVideosUrl(MovieDetails movie) {
+        Uri movieDB = Uri.parse(theMovieDBBaseURL +
+                movie.getID() + theMovieDBVideosURL)
+                .buildUpon()
+                .appendQueryParameter(API_KEY_PARAM, API_KEY_TheMovieDB)
+                .build();
+
+        try {
+            return new URL(movieDB.toString());
+        } catch (MalformedURLException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String getResponseFromHttpUrl(Context context, URL url) throws IOException {
