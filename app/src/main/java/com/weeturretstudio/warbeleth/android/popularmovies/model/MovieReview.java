@@ -1,5 +1,8 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /*
 Sample JSON
 {
@@ -17,12 +20,32 @@ Sample JSON
   "total_results": 1
 }
 */
-public class MovieReview {
+public class MovieReview implements Parcelable {
     private int mID;
     private String mReviewID;
     private String mAuthor;
     private String mContent;
     private String mURL;
+
+    private MovieReview(Parcel in) {
+        mID = in.readInt();
+        mReviewID = in.readString();
+        mAuthor = in.readString();
+        mContent = in.readString();
+        mURL = in.readString();
+    }
+
+    public static final Creator<MovieReview> CREATOR = new Creator<MovieReview>() {
+        @Override
+        public MovieReview createFromParcel(Parcel in) {
+            return new MovieReview(in);
+        }
+
+        @Override
+        public MovieReview[] newArray(int size) {
+            return new MovieReview[size];
+        }
+    };
 
     public int getmID() {
         return mID;
@@ -62,5 +85,19 @@ public class MovieReview {
 
     public void setmURL(String mURL) {
         this.mURL = mURL;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mID);
+        dest.writeString(mReviewID);
+        dest.writeString(mAuthor);
+        dest.writeString(mContent);
+        dest.writeString(mURL);
     }
 }

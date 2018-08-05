@@ -1,5 +1,8 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /*
 Sample JSON
 {
@@ -18,7 +21,7 @@ Sample JSON
   ]
 }
 */
-public class MovieVideo {
+public class MovieVideo implements Parcelable {
     private int mID;
     private String mVidID;
     private String mKey;
@@ -26,6 +29,28 @@ public class MovieVideo {
     private String mSite;
     private int mSize; //Allowed Values: 360, 480, 720, 1080
     private String mType; //Allowed Values: Trailer, Teaser, Clip, Featurette
+
+    protected MovieVideo(Parcel in) {
+        mID = in.readInt();
+        mVidID = in.readString();
+        mKey = in.readString();
+        mName = in.readString();
+        mSite = in.readString();
+        mSize = in.readInt();
+        mType = in.readString();
+    }
+
+    public static final Creator<MovieVideo> CREATOR = new Creator<MovieVideo>() {
+        @Override
+        public MovieVideo createFromParcel(Parcel in) {
+            return new MovieVideo(in);
+        }
+
+        @Override
+        public MovieVideo[] newArray(int size) {
+            return new MovieVideo[size];
+        }
+    };
 
     public int getmID() {
         return mID;
@@ -81,5 +106,21 @@ public class MovieVideo {
 
     public void setmType(String mType) {
         this.mType = mType;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mID);
+        dest.writeString(mVidID);
+        dest.writeString(mKey);
+        dest.writeString(mName);
+        dest.writeString(mSite);
+        dest.writeInt(mSize);
+        dest.writeString(mType);
     }
 }

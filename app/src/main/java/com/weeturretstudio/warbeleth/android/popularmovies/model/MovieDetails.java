@@ -3,15 +3,20 @@ package com.weeturretstudio.warbeleth.android.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class MovieDetails implements Parcelable {
 
     public static final String EXTRA_IDENTIFIER = "KEY_MovieDetails";
     private int mID;
-    private String mMovieName;      //original_title
-    private String mPosterPath;     //poster_path
-    private String mOverview;       //overview
-    private String mReleaseDate;    //release_date
-    private String mRating;         //vote_average
+    private String mMovieName;                      //original_title
+    private String mPosterPath;                     //poster_path
+    private String mOverview;                       //overview
+    private String mReleaseDate;                    //release_date
+    private String mRating;                         //vote_average
+    private ArrayList<MovieReview> mRevies;         //
+    private ArrayList<MovieVideo> mRelatedvideos;   //
+
 
     public MovieDetails(){}
 
@@ -24,13 +29,15 @@ public class MovieDetails implements Parcelable {
         mRating = rating;
     }
 
-    private MovieDetails(Parcel in) {
+    protected MovieDetails(Parcel in) {
         mID = in.readInt();
         mMovieName = in.readString();
         mPosterPath = in.readString();
         mOverview = in.readString();
         mReleaseDate = in.readString();
         mRating = in.readString();
+        mRevies = in.createTypedArrayList(MovieReview.CREATOR);
+        mRelatedvideos = in.createTypedArrayList(MovieVideo.CREATOR);
     }
 
     public static final Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
@@ -94,6 +101,16 @@ public class MovieDetails implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return ("ID: " + mID + "\n" +
+                "Title: " + mMovieName + "\n" +
+                "PosterPath: " + mPosterPath + "\n" +
+                "Overview: " + mOverview + "\n" +
+                "Release Date: " + mReleaseDate + "\n" +
+                "Rating: " + mRating + "\n");
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -106,15 +123,7 @@ public class MovieDetails implements Parcelable {
         dest.writeString(mOverview);
         dest.writeString(mReleaseDate);
         dest.writeString(mRating);
-    }
-
-    @Override
-    public String toString() {
-        return ("ID: " + mID + "\n" +
-                "Title: " + mMovieName + "\n" +
-                "PosterPath: " + mPosterPath + "\n" +
-                "Overview: " + mOverview + "\n" +
-                "Release Date: " + mReleaseDate + "\n" +
-                "Rating: " + mRating + "\n");
+        dest.writeTypedList(mRevies);
+        dest.writeTypedList(mRelatedvideos);
     }
 }
