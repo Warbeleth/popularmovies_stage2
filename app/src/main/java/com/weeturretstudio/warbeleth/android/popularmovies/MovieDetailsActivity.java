@@ -20,6 +20,9 @@ import com.weeturretstudio.warbeleth.android.popularmovies.utilities.UrlAsyncLoa
 public class MovieDetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     private static final String TAG = MovieDetailsActivity.class.getSimpleName();
+    private static final int REVIEW_ENDPOINT_ID = 100;
+    private static final int TRAILER_ENDPOINT_ID = 101;
+    private MovieDetails currentMovie = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
             if(selectedMovie != null) {
                 //Time to log what we have, and then create our view!
                 Log.v(TAG, selectedMovie.toString());
+
+                //Store the currently selected movie.
+                currentMovie = selectedMovie;
+
+                getSupportLoaderManager().initLoader(REVIEW_ENDPOINT_ID,
+                        null,this);
+
+                getSupportLoaderManager().initLoader(TRAILER_ENDPOINT_ID,
+                        null,this);
 
                 /*
                         ImageView thumbnail = (ImageView)convertView;
@@ -73,13 +85,27 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
     @NonNull
     @Override
     public Loader<String> onCreateLoader(int id, @Nullable Bundle args) {
-        //TODO: Pass correct URL based on ID?
-        return new UrlAsyncLoader(this, null);
+        if(id == REVIEW_ENDPOINT_ID) {
+            Log.v(TAG, "CreateLoader: " + id + " corresponding to: " + "REVIEW_ENDPOINT");
+            return new UrlAsyncLoader(this, NetworkUtils.getReviewsUrl(currentMovie));
+        }
+        else {
+            Log.v(TAG, "CreateLoader: " + id + " corresponding to: " + "TRAILER_ENDPOINT");
+            return new UrlAsyncLoader(this, NetworkUtils.getVideosUrl(currentMovie));
+        }
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         //TODO: Parse result based on loader's ID?
+        if(loader.getId() == REVIEW_ENDPOINT_ID) {
+            //TODO: Parse review
+            Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
+        }
+        else if(loader.getId() == TRAILER_ENDPOINT_ID) {
+            //TODO: Parse trailer
+            Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
+        }
     }
 
     @Override

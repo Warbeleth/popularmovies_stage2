@@ -71,7 +71,7 @@ public class NetworkUtils {
     }
 
     public static URL getReviewsUrl(MovieDetails movie) {
-        Uri movieDB = Uri.parse(theMovieDBBaseURL +
+        Uri movieDB = Uri.parse(theMovieDBBaseURL + "/" +
                 movie.getID() + theMovieDBReviewsURL)
                 .buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, API_KEY_TheMovieDB)
@@ -87,7 +87,7 @@ public class NetworkUtils {
     }
 
     public static URL getVideosUrl(MovieDetails movie) {
-        Uri movieDB = Uri.parse(theMovieDBBaseURL +
+        Uri movieDB = Uri.parse(theMovieDBBaseURL + "/" +
                 movie.getID() + theMovieDBVideosURL)
                 .buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, API_KEY_TheMovieDB)
