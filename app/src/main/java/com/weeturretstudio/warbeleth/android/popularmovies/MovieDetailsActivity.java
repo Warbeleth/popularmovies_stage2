@@ -1,6 +1,7 @@
 package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.Intent;
+import android.net.Network;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
+import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.UrlAsyncLoader;
 
@@ -99,12 +101,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         //TODO: Parse result based on loader's ID?
         if(loader.getId() == REVIEW_ENDPOINT_ID) {
-            //TODO: Parse review
             Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
+            JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data));
         }
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
-            //TODO: Parse trailer
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
+            JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data));
         }
     }
 

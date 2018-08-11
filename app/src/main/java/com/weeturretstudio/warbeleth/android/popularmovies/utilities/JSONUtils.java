@@ -3,14 +3,19 @@ package com.weeturretstudio.warbeleth.android.popularmovies.utilities;
 import android.util.Log;
 
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
+import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReview;
+import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class JSONUtils {
     private static final String TAG = JSONUtils.class.getSimpleName();
 
+    //Movie RESULT values
     private static final String KEY_JSON_PAGE = "page";
     private static final String KEY_JSON_RESULTS = "results";
     private static final String KEY_JSON_ID = "id";
@@ -20,6 +25,10 @@ public class JSONUtils {
     private static final String KEY_JSON_OVERVIEW = "overview";
     private static final String KEY_JSON_RELEASE_DATE = "release_date";
     private static final String KEY_JSON_RATING = "vote_average";
+
+    //Review RESULT values
+
+    //Video RESULT values
 
     public static JSONObject parseStringToJSON(String jsonString) {
         JSONObject result = null;
@@ -59,5 +68,17 @@ public class JSONUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static ArrayList<MovieReview> parseReviews(JSONObject parseMe) {
+        //TODO: Parse review
+        Log.v(TAG, "parseReviews: " + parseMe.toString());
+        return null;
+    }
+
+    public static ArrayList<MovieVideo> parseVideos(JSONObject parseMe) {
+        //TODO: Parse trailer
+        Log.v(TAG, "parseVideos: " + parseMe.toString());
+        return null;
     }
 }
