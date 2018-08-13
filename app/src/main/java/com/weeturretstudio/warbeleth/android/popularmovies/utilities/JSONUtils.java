@@ -27,6 +27,10 @@ public class JSONUtils {
     private static final String KEY_JSON_RATING = "vote_average";
 
     //Review RESULT values
+    private static final String KEY_REVIEW_JSON_ID = "id";
+    private static final String KEY_REVIEW_JSON_URL = "url";
+    private static final String KEY_REVIEW_JSON_AUTHOR = "author";
+    private static final String KEY_REVIEW_JSON_CONTENT = "content";
 
     //Video RESULT values
 
@@ -73,7 +77,30 @@ public class JSONUtils {
     public static ArrayList<MovieReview> parseReviews(JSONObject parseMe) {
         //TODO: Parse review
         Log.v(TAG, "parseReviews: " + parseMe.toString());
-        return null;
+        try {
+            JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);
+            int numResults = resultsArray.length();
+            ArrayList<MovieReview> movieData = new ArrayList<>(numResults);
+
+            for(int i = 0; i < numResults; i++) {
+                JSONObject currentReview = resultsArray.getJSONObject(i);
+
+                MovieReview review = new MovieReview();
+                review.setmReviewID(currentReview.getString(KEY_REVIEW_JSON_ID));
+                review.setmURL(currentReview.getString(KEY_REVIEW_JSON_URL));
+                review.setmAuthor(currentReview.getString(KEY_REVIEW_JSON_AUTHOR));
+                review.setmContent(currentReview.getString(KEY_REVIEW_JSON_CONTENT));
+
+                movieData.add(review);
+            }
+
+            return movieData;
+
+        } catch (JSONException e) {
+            Log.e(TAG, "parseReviews: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static ArrayList<MovieVideo> parseVideos(JSONObject parseMe) {

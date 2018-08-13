@@ -21,14 +21,16 @@ Sample JSON
 }
 */
 public class MovieReview implements Parcelable {
-    private int mID;
     private String mReviewID;
     private String mAuthor;
     private String mContent;
     private String mURL;
 
+    public MovieReview() {
+
+    }
+
     private MovieReview(Parcel in) {
-        mID = in.readInt();
         mReviewID = in.readString();
         mAuthor = in.readString();
         mContent = in.readString();
@@ -46,14 +48,6 @@ public class MovieReview implements Parcelable {
             return new MovieReview[size];
         }
     };
-
-    public int getmID() {
-        return mID;
-    }
-
-    public void setmID(int mID) {
-        this.mID = mID;
-    }
 
     public String getmReviewID() {
         return mReviewID;
@@ -94,7 +88,6 @@ public class MovieReview implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mID);
         dest.writeString(mReviewID);
         dest.writeString(mAuthor);
         dest.writeString(mContent);
