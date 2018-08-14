@@ -56,13 +56,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
                 getSupportLoaderManager().initLoader(TRAILER_ENDPOINT_ID,
                         null,this);
 
-                /*
-                        ImageView thumbnail = (ImageView)convertView;
-        Picasso.with(getContext()).load(
-                NetworkUtils.getPosterUri(getContext(), movieDetails.gePosterPath()))
-                .into(thumbnail);
-                 */
-
                 if(selectedMovie.getMovieName() != null)
                     ((TextView)findViewById(R.id.tv_details_movie_title)).setText(selectedMovie.getMovieName());
 
@@ -99,7 +92,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
 
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
-        //TODO: Parse result based on loader's ID?
         if(loader.getId() == REVIEW_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
             JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data));

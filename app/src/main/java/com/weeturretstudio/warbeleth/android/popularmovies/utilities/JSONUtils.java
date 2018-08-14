@@ -33,6 +33,12 @@ public class JSONUtils {
     private static final String KEY_REVIEW_JSON_CONTENT = "content";
 
     //Video RESULT values
+    private static final String KEY_VIDEO_JSON_ID = "id";
+    private static final String KEY_VIDEO_JSON_KEY = "key";
+    private static final String KEY_VIDEO_JSON_NAME = "name";
+    private static final String KEY_VIDEO_JSON_SITE = "site";
+    private static final String KEY_VIDEO_JSON_SIZE = "size";
+    private static final String KEY_VIDEO_JSON_TYPE = "type";
 
     public static JSONObject parseStringToJSON(String jsonString) {
         JSONObject result = null;
@@ -75,7 +81,6 @@ public class JSONUtils {
     }
 
     public static ArrayList<MovieReview> parseReviews(JSONObject parseMe) {
-        //TODO: Parse review
         Log.v(TAG, "parseReviews: " + parseMe.toString());
         try {
             JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);
@@ -104,8 +109,33 @@ public class JSONUtils {
     }
 
     public static ArrayList<MovieVideo> parseVideos(JSONObject parseMe) {
-        //TODO: Parse trailer
         Log.v(TAG, "parseVideos: " + parseMe.toString());
-        return null;
+        try {
+            JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);
+            int numResults = resultsArray.length();
+            ArrayList<MovieVideo> movieData = new ArrayList<>(numResults);
+
+            for(int i = 0; i < numResults; i++) {
+                JSONObject currentVideo = resultsArray.getJSONObject(i);
+
+                MovieVideo video = new MovieVideo();
+
+                video.setmVidID(currentVideo.getString(KEY_VIDEO_JSON_ID));
+                video.setmKey(currentVideo.getString(KEY_VIDEO_JSON_KEY));
+                video.setmName(currentVideo.getString(KEY_VIDEO_JSON_NAME));
+                video.setmSite(currentVideo.getString(KEY_VIDEO_JSON_SITE));
+                video.setmSize(currentVideo.getInt(KEY_VIDEO_JSON_SIZE));
+                video.setmType(currentVideo.getString(KEY_VIDEO_JSON_TYPE));
+
+                movieData.add(video);
+            }
+
+            return movieData;
+
+        } catch (JSONException e) {
+            Log.e(TAG, "parseVideos: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -22,7 +22,6 @@ Sample JSON
 }
 */
 public class MovieVideo implements Parcelable {
-    private int mID;
     private String mVidID;
     private String mKey;
     private String mName;
@@ -30,8 +29,9 @@ public class MovieVideo implements Parcelable {
     private int mSize; //Allowed Values: 360, 480, 720, 1080
     private String mType; //Allowed Values: Trailer, Teaser, Clip, Featurette
 
+    public MovieVideo(){}
+
     protected MovieVideo(Parcel in) {
-        mID = in.readInt();
         mVidID = in.readString();
         mKey = in.readString();
         mName = in.readString();
@@ -51,14 +51,6 @@ public class MovieVideo implements Parcelable {
             return new MovieVideo[size];
         }
     };
-
-    public int getmID() {
-        return mID;
-    }
-
-    public void setmID(int mID) {
-        this.mID = mID;
-    }
 
     public String getmVidID() {
         return mVidID;
@@ -115,7 +107,6 @@ public class MovieVideo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mID);
         dest.writeString(mVidID);
         dest.writeString(mKey);
         dest.writeString(mName);
