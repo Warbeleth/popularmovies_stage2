@@ -14,8 +14,8 @@ public class MovieDetails implements Parcelable {
     private String mOverview;                       //overview
     private String mReleaseDate;                    //release_date
     private String mRating;                         //vote_average
-    private ArrayList<MovieReview> mRevies;         //
-    private ArrayList<MovieVideo> mRelatedvideos;   //
+    private ArrayList<MovieReview> mReviews;        //Reviews
+    private ArrayList<MovieVideo> mRelatedvideos;   //Videos
 
 
     public MovieDetails(){}
@@ -36,7 +36,7 @@ public class MovieDetails implements Parcelable {
         mOverview = in.readString();
         mReleaseDate = in.readString();
         mRating = in.readString();
-        mRevies = in.createTypedArrayList(MovieReview.CREATOR);
+        mReviews = in.createTypedArrayList(MovieReview.CREATOR);
         mRelatedvideos = in.createTypedArrayList(MovieVideo.CREATOR);
     }
 
@@ -100,6 +100,10 @@ public class MovieDetails implements Parcelable {
         this.mRating = mRating;
     }
 
+    public void setReviews(ArrayList<MovieReview> reviews) { this.mReviews = reviews; }
+
+    public void setRelatedvideos(ArrayList<MovieVideo> relatedvideos) { this.mRelatedvideos = relatedvideos; }
+
     @Override
     public String toString() {
         return ("ID: " + mID + "\n" +
@@ -123,7 +127,7 @@ public class MovieDetails implements Parcelable {
         dest.writeString(mOverview);
         dest.writeString(mReleaseDate);
         dest.writeString(mRating);
-        dest.writeTypedList(mRevies);
+        dest.writeTypedList(mReviews);
         dest.writeTypedList(mRelatedvideos);
     }
 }

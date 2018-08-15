@@ -10,7 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -94,11 +96,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
         if(loader.getId() == REVIEW_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
-            JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data));
+            currentMovie.setReviews(JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data)));
+            ScrollView reviews = findViewById(R.id.Reviews_Scrollview);
         }
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
-            JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data));
+            currentMovie.setRelatedvideos(JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data)));
+            HorizontalScrollView videos = findViewById(R.id.Trailers_ScrollView);
         }
     }
 
