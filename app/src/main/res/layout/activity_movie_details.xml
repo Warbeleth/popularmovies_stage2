@@ -163,7 +163,7 @@
 
         <!--app:layout_constraintGuide_begin=".6"-->
 
-        <HorizontalScrollView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/Trailers_ScrollView"
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -177,16 +177,11 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_ml_details_overview_value">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical" />
-        </HorizontalScrollView>
+        </android.support.v7.widget.RecyclerView>
 
         <!--app:layout_constraintGuide_begin=".75"-->
 
-        <ScrollView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/Reviews_Scrollview"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -197,12 +192,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

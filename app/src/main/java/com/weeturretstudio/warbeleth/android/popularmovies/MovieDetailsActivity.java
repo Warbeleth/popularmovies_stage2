@@ -9,6 +9,8 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -27,11 +29,24 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
     private static final int REVIEW_ENDPOINT_ID = 100;
     private static final int TRAILER_ENDPOINT_ID = 101;
     private MovieDetails currentMovie = null;
+    private RecyclerView trailerView = null;
+    private RecyclerView reviewView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+
+        trailerView = (RecyclerView)findViewById(R.id.Trailers_ScrollView);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this,
+                                        LinearLayoutManager.HORIZONTAL, false);
+        trailerView.setLayoutManager(horizontalLayoutManager);
+        //TODO: Create Adapter for trailers.
+
+        reviewView = (RecyclerView)findViewById(R.id.reviews_RecyclerView);
+        LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(this);
+        reviewView.setLayoutManager(verticalLayoutManager);
+        //TODO: Create adapter for reviews.
 
         ActionBar actionBar = this.getSupportActionBar();
 
