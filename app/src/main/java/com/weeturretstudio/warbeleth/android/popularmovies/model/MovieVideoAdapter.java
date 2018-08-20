@@ -21,6 +21,7 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
 
     public void setVideos(ArrayList<MovieVideo> videos) {
         movieVideos = videos;
+        this.notifyDataSetChanged();
     }
 
     class VideoViewHolder extends RecyclerView.ViewHolder {
@@ -67,7 +68,10 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(null == movieVideos)
+            return 0;
+
+        return movieVideos.size();
     }
 
 

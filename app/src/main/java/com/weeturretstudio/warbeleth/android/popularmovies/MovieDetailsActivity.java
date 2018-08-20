@@ -43,8 +43,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
                                         LinearLayoutManager.HORIZONTAL, false);
         trailerView.setLayoutManager(horizontalLayoutManager);
         //TODO: Create Adapter for trailers.
+        MovieVideoAdapter mvAdapter = new MovieVideoAdapter(null);
+        trailerView.setAdapter(mvAdapter);
 
-        reviewView = (RecyclerView)findViewById(R.id.reviews_RecyclerView);
+        reviewView = (RecyclerView)findViewById(R.id.Reviews_Scrollview);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(this);
         reviewView.setLayoutManager(verticalLayoutManager);
         //TODO: Create adapter for reviews.
@@ -113,15 +115,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         if(loader.getId() == REVIEW_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
             currentMovie.setReviews(JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data)));
-            ScrollView reviews = findViewById(R.id.Reviews_Scrollview);
+            //ScrollView reviews = findViewById(R.id.Reviews_Scrollview);
         }
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
             currentMovie.setRelatedvideos(JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data)));
 
-            MovieVideoAdapter mvAdapter = new MovieVideoAdapter(currentMovie.getRelatedVideos());
-
-            trailerView.setAdapter(mvAdapter);
+            ((MovieVideoAdapter)trailerView.getAdapter()).setVideos(currentMovie.getRelatedVideos());
         }
     }
 
