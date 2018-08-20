@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
+import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideoAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.UrlAsyncLoader;
@@ -117,7 +118,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
             currentMovie.setRelatedvideos(JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data)));
-            HorizontalScrollView videos = findViewById(R.id.Trailers_ScrollView);
+
+            MovieVideoAdapter mvAdapter = new MovieVideoAdapter(currentMovie.getRelatedVideos());
+
+            trailerView.setAdapter(mvAdapter);
         }
     }
 
