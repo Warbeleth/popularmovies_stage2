@@ -102,9 +102,12 @@ public class MovieDetails implements Parcelable {
 
     public void setReviews(ArrayList<MovieReview> reviews) { this.mReviews = reviews; }
 
+    public ArrayList<MovieReview> getRelatedReviews() { return this.mReviews; }
+
     public void setRelatedvideos(ArrayList<MovieVideo> relatedvideos) { this.mRelatedvideos = relatedvideos; }
 
     public ArrayList<MovieVideo> getRelatedVideos() { return this.mRelatedvideos; }
+
     @Override
     public String toString() {
         return ("ID: " + mID + "\n" +

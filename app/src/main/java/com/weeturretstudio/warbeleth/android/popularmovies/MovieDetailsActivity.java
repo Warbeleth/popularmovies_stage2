@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
+import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReviewAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideoAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtils;
@@ -50,6 +51,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(this);
         reviewView.setLayoutManager(verticalLayoutManager);
         //TODO: Create adapter for reviews.
+        MovieReviewAdapter mrAdapter = new MovieReviewAdapter(null);
+        reviewView.setAdapter(mrAdapter);
 
         ActionBar actionBar = this.getSupportActionBar();
 
@@ -116,6 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
             Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
             currentMovie.setReviews(JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data)));
             //ScrollView reviews = findViewById(R.id.Reviews_Scrollview);
+            ((MovieReviewAdapter)reviewView.getAdapter()).setReviews(currentMovie.getRelatedReviews());
         }
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
