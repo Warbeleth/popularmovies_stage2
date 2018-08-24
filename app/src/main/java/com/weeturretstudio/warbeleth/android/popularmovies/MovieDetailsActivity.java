@@ -40,9 +40,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         setContentView(R.layout.activity_movie_details);
 
         trailerView = (RecyclerView)findViewById(R.id.Trailers_ScrollView);
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this,
-                                        LinearLayoutManager.HORIZONTAL, false);
-        trailerView.setLayoutManager(horizontalLayoutManager);
+        LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this );
+                                        //LinearLayoutManager.HORIZONTAL, false);
+        trailerView.setLayoutManager(trailerLayoutManager);
         //TODO: Create Adapter for trailers.
         MovieVideoAdapter mvAdapter = new MovieVideoAdapter(null);
         trailerView.setAdapter(mvAdapter);
