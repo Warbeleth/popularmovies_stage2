@@ -161,12 +161,10 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent=".5" />
 
-        <!--app:layout_constraintGuide_begin=".6"-->
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Trailers_ScrollView"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
@@ -176,14 +174,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ml_details_overview_value"/>
-
-        <!--app:layout_constraintGuide_begin=".75"-->
+            app:layout_constraintTop_toBottomOf="@+id/tv_ml_details_overview_value" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Reviews_Scrollview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
@@ -191,7 +187,20 @@
             android:minHeight="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.RecyclerView>
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:backgroundTint="?attr/colorPrimaryDark"
+            app:layout_constraintStart_toStartOf="@+id/vertical_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/tv_details_rating_value"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
