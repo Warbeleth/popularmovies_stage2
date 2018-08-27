@@ -10,7 +10,8 @@ import android.widget.TextView;
 import com.weeturretstudio.warbeleth.android.popularmovies.R;
 import java.util.ArrayList;
 
-public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.VideoViewHolder> {
+public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.VideoViewHolder>
+                               implements View.OnClickListener {
     private static final String TAG = MovieVideoAdapter.class.getSimpleName();
 
     private ArrayList<MovieVideo> movieVideos;
@@ -22,6 +23,11 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
     public void setVideos(ArrayList<MovieVideo> videos) {
         movieVideos = videos;
         this.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        //TODO: implementing trailer intent
     }
 
     class VideoViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +61,9 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
 
         View view = inflater.inflate(layoutIdForVideo, parent,
                                     shouldAttachImmediately);
+
+        view.setOnClickListener(this);
+
         VideoViewHolder viewHolder = new VideoViewHolder(view);
         return viewHolder;
     }

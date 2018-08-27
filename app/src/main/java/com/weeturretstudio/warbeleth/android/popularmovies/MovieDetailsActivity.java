@@ -52,14 +52,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this );
                                         //LinearLayoutManager.HORIZONTAL, false);
         trailerView.setLayoutManager(trailerLayoutManager);
-        //TODO: Create Adapter for trailers.
         MovieVideoAdapter mvAdapter = new MovieVideoAdapter(null);
         trailerView.setAdapter(mvAdapter);
 
         reviewView = (RecyclerView)findViewById(R.id.Reviews_Scrollview);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(this);
         reviewView.setLayoutManager(verticalLayoutManager);
-        //TODO: Create adapter for reviews.
         MovieReviewAdapter mrAdapter = new MovieReviewAdapter(null);
         reviewView.setAdapter(mrAdapter);
 
