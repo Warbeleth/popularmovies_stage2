@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorBackground"
+    android:id="@+id/details_activity_scrollview"
     tools:context=".MovieDetailsActivity">
 
     <android.support.constraint.ConstraintLayout
@@ -164,12 +166,13 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Trailers_ScrollView"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/darker_gray"
+            android:maxHeight="100dp"
             app:layout_constraintBottom_toTopOf="@+id/Reviews_Scrollview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
@@ -179,15 +182,16 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Reviews_Scrollview"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:background="@android:color/darker_gray"
+            android:maxHeight="200dp"
             android:minHeight="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -33,11 +34,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
     private MovieDetails currentMovie = null;
     private RecyclerView trailerView = null;
     private RecyclerView reviewView = null;
+    private ScrollView detailsActivityContainer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+
+        detailsActivityContainer = findViewById(R.id.details_activity_scrollview);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +138,30 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
 
             ((MovieVideoAdapter)trailerView.getAdapter()).setVideos(currentMovie.getRelatedVideos());
         }
+
+        updateScrollPosition();
+    }
+
+    private void updateScrollPosition() {
+
+        if(currentMovie != null) {
+            //Toggle visibility based on reviews
+            if (currentMovie.getRelatedReviews() != null
+                    && currentMovie.getRelatedReviews().size() == 0)
+                reviewView.setVisibility(View.GONE);
+            else
+                reviewView.setVisibility(View.VISIBLE);
+
+            //Toggle visibility based on videos
+            if (currentMovie.getRelatedVideos() != null
+                    && currentMovie.getRelatedVideos().size() == 0)
+                trailerView.setVisibility(View.GONE);
+            else
+                trailerView.setVisibility(View.VISIBLE);
+        }
+
+        //Scroll to top of page.
+        detailsActivityContainer.fullScroll(ScrollView.FOCUS_UP);
     }
 
     @Override

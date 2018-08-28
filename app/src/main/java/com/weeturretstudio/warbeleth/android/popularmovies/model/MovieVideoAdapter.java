@@ -1,8 +1,12 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
                                implements View.OnClickListener {
     private static final String TAG = MovieVideoAdapter.class.getSimpleName();
 
+    private static final String SITE_YOUTUBE = "YouTube";
     private ArrayList<MovieVideo> movieVideos;
 
     public MovieVideoAdapter(ArrayList<MovieVideo> videos) {
@@ -27,7 +32,17 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
 
     @Override
     public void onClick(View v) {
-        //TODO: implementing trailer intent
+        Log.v(TAG, "View: " + v.toString());
+        RecyclerView parent = (RecyclerView) v.getParent();
+        int index = parent.getChildAdapterPosition(v);
+
+        MovieVideo selectedVideo = movieVideos.get(index);
+        if(selectedVideo.getmSite().equals(SITE_YOUTUBE)) {
+            Intent youtubeIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("vnd.youtube://"+selectedVideo.getmKey()));
+
+            parent.getContext().startActivity(youtubeIntent);
+        }
     }
 
     class VideoViewHolder extends RecyclerView.ViewHolder {

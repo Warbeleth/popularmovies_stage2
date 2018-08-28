@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int MOVIE_API_LOADER_ID = 323272;
     private static MovieDetailsArrayAdapter movieAdapter = null;
     private static String httpResultString = "";
+    private static boolean loadingDetailsActivity = false;
 
     private MovieDetails[] currentMovies = null;
 
@@ -159,10 +160,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    MovieDetails nestedDetails = (MovieDetails)parent.getItemAtPosition(position);
-                    Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
-                    launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
-                    startActivity(launchDetailsActivity);
+
+                    if(!loadingDetailsActivity) {
+                        loadingDetailsActivity = true;
+                        MovieDetails nestedDetails = (MovieDetails) parent.getItemAtPosition(position);
+                        Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
+                        launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
+                        startActivity(launchDetailsActivity);
+                        loadingDetailsActivity = false;
+                    }
                 }
             });
         }
