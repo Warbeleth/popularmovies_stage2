@@ -5,6 +5,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -14,38 +15,52 @@ public class MovieDetails implements Parcelable {
     public static final String EXTRA_IDENTIFIER = "KEY_MovieDetails";
 
     @PrimaryKey
-    private int mID;
-    private String mMovieName;                      //original_title
-    private String mPosterPath;                     //poster_path
-    private String mOverview;                       //overview
-    private String mReleaseDate;                    //release_date
-    private String mRating;                         //vote_average
+    @NonNull
+    private int ID;
+    private String MovieName;                      //original_title
+    private String PosterPath;                     //poster_path
+    private String Overview;                       //overview
+    private String ReleaseDate;                    //release_date
+    private String Rating;                         //vote_average
+    @Ignore
     private ArrayList<MovieReview> mReviews;        //Reviews
+    @Ignore
     private ArrayList<MovieVideo> mRelatedvideos;   //Videos
 
 
     @Ignore
     public MovieDetails(){}
 
+    public MovieDetails(int ID, String MovieName, String PosterPath, String Overview, String ReleaseDate, String Rating) {
+        this.ID = ID;
+        this.MovieName = MovieName;
+        this.PosterPath = PosterPath;
+        this.Overview = Overview;
+        this.ReleaseDate = ReleaseDate;
+        this.Rating = Rating;
+    }
+
+    @Ignore
     public MovieDetails(int id, String name, String poster, String overview, String releaseDate, String rating,
                         ArrayList<MovieReview> reviews, ArrayList<MovieVideo> videos) {
-        mID = id;
-        mMovieName = name;
-        mPosterPath = poster;
-        mOverview = overview;
-        mReleaseDate = releaseDate;
-        mRating = rating;
+        ID = id;
+        MovieName = name;
+        PosterPath = poster;
+        Overview = overview;
+        ReleaseDate = releaseDate;
+        Rating = rating;
         mReviews = reviews;
         mRelatedvideos = videos;
     }
 
+    @Ignore
     protected MovieDetails(Parcel in) {
-        mID = in.readInt();
-        mMovieName = in.readString();
-        mPosterPath = in.readString();
-        mOverview = in.readString();
-        mReleaseDate = in.readString();
-        mRating = in.readString();
+        ID = in.readInt();
+        MovieName = in.readString();
+        PosterPath = in.readString();
+        Overview = in.readString();
+        ReleaseDate = in.readString();
+        Rating = in.readString();
         mReviews = in.createTypedArrayList(MovieReview.CREATOR);
         mRelatedvideos = in.createTypedArrayList(MovieVideo.CREATOR);
     }
@@ -63,51 +78,51 @@ public class MovieDetails implements Parcelable {
     };
 
     public int getID() {
-        return mID;
+        return ID;
     }
 
     public void setID(int mID) {
-        this.mID = mID;
+        this.ID = mID;
     }
 
     public String getMovieName() {
-        return mMovieName;
+        return MovieName;
     }
 
     public void setMovieName(String mMovieName) {
-        this.mMovieName = mMovieName;
+        this.MovieName = mMovieName;
     }
 
     public String getPosterPath() {
-        return mPosterPath;
+        return PosterPath;
     }
 
     public void setPosterPath(String mPosterPath) {
-        this.mPosterPath = mPosterPath;
+        this.PosterPath = mPosterPath;
     }
 
     public String getOverview() {
-        return mOverview;
+        return Overview;
     }
 
     public void setOverview(String mOverview) {
-        this.mOverview = mOverview;
+        this.Overview = mOverview;
     }
 
     public String getReleaseDate() {
-        return mReleaseDate;
+        return ReleaseDate;
     }
 
     public void setReleaseDate(String mReleaseDate) {
-        this.mReleaseDate = mReleaseDate;
+        this.ReleaseDate = mReleaseDate;
     }
 
     public String getRating() {
-        return mRating;
+        return Rating;
     }
 
     public void setRating(String mRating) {
-        this.mRating = mRating;
+        this.Rating = mRating;
     }
 
     public void setReviews(ArrayList<MovieReview> reviews) { this.mReviews = reviews; }
@@ -120,12 +135,12 @@ public class MovieDetails implements Parcelable {
 
     @Override
     public String toString() {
-        return ("ID: " + mID + "\n" +
-                "Title: " + mMovieName + "\n" +
-                "PosterPath: " + mPosterPath + "\n" +
-                "Overview: " + mOverview + "\n" +
-                "Release Date: " + mReleaseDate + "\n" +
-                "Rating: " + mRating + "\n");
+        return ("ID: " + ID + "\n" +
+                "Title: " + MovieName + "\n" +
+                "PosterPath: " + PosterPath + "\n" +
+                "Overview: " + Overview + "\n" +
+                "Release Date: " + ReleaseDate + "\n" +
+                "Rating: " + Rating + "\n");
     }
 
     @Override
@@ -135,12 +150,12 @@ public class MovieDetails implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mID);
-        dest.writeString(mMovieName);
-        dest.writeString(mPosterPath);
-        dest.writeString(mOverview);
-        dest.writeString(mReleaseDate);
-        dest.writeString(mRating);
+        dest.writeInt(ID);
+        dest.writeString(MovieName);
+        dest.writeString(PosterPath);
+        dest.writeString(Overview);
+        dest.writeString(ReleaseDate);
+        dest.writeString(Rating);
         dest.writeTypedList(mReviews);
         dest.writeTypedList(mRelatedvideos);
     }

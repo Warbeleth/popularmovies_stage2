@@ -1,7 +1,11 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /*
 Sample JSON
@@ -21,23 +25,39 @@ Sample JSON
   ]
 }
 */
+@Entity(tableName = "tbl_related_video")
 public class MovieVideo implements Parcelable {
-    private String mVidID;
-    private String mKey;
-    private String mName;
-    private String mSite;
-    private int mSize; //Allowed Values: 360, 480, 720, 1080
-    private String mType; //Allowed Values: Trailer, Teaser, Clip, Featurette
 
+    @PrimaryKey
+    @NonNull
+    private String VidID;
+    private String Key;
+    private String Name;
+    private String Site;
+    private int Size; //Allowed Values: 360, 480, 720, 1080
+    private String Type; //Allowed Values: Trailer, Teaser, Clip, Featurette
+
+    @Ignore
     public MovieVideo(){}
 
+    public MovieVideo(String VidID, String Key, String Name, String Site, int Size, String Type)
+    {
+        this.VidID = VidID;
+        this.Key = Key;
+        this.Name = Name;
+        this.Site = Site;
+        this.Size = Size;
+        this.Type = Type;
+    }
+
+    @Ignore
     protected MovieVideo(Parcel in) {
-        mVidID = in.readString();
-        mKey = in.readString();
-        mName = in.readString();
-        mSite = in.readString();
-        mSize = in.readInt();
-        mType = in.readString();
+        VidID = in.readString();
+        Key = in.readString();
+        Name = in.readString();
+        Site = in.readString();
+        Size = in.readInt();
+        Type = in.readString();
     }
 
     public static final Creator<MovieVideo> CREATOR = new Creator<MovieVideo>() {
@@ -52,52 +72,52 @@ public class MovieVideo implements Parcelable {
         }
     };
 
-    public String getmVidID() {
-        return mVidID;
+    public String getVidID() {
+        return VidID;
     }
 
-    public void setmVidID(String mVidID) {
-        this.mVidID = mVidID;
+    public void setVidID(String vidID) {
+        this.VidID = vidID;
     }
 
-    public String getmKey() {
-        return mKey;
+    public String getKey() {
+        return Key;
     }
 
-    public void setmKey(String mKey) {
-        this.mKey = mKey;
+    public void setKey(String key) {
+        this.Key = key;
     }
 
-    public String getmName() {
-        return mName;
+    public String getName() {
+        return Name;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setName(String name) {
+        this.Name = name;
     }
 
-    public String getmSite() {
-        return mSite;
+    public String getSite() {
+        return Site;
     }
 
-    public void setmSite(String mSite) {
-        this.mSite = mSite;
+    public void setSite(String site) {
+        this.Site = site;
     }
 
-    public int getmSize() {
-        return mSize;
+    public int getSize() {
+        return Size;
     }
 
-    public void setmSize(int mSize) {
-        this.mSize = mSize;
+    public void setSize(int size) {
+        this.Size = size;
     }
 
-    public String getmType() {
-        return mType;
+    public String getType() {
+        return Type;
     }
 
-    public void setmType(String mType) {
-        this.mType = mType;
+    public void setType(String type) {
+        this.Type = type;
     }
 
     @Override
@@ -107,11 +127,11 @@ public class MovieVideo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mVidID);
-        dest.writeString(mKey);
-        dest.writeString(mName);
-        dest.writeString(mSite);
-        dest.writeInt(mSize);
-        dest.writeString(mType);
+        dest.writeString(VidID);
+        dest.writeString(Key);
+        dest.writeString(Name);
+        dest.writeString(Site);
+        dest.writeInt(Size);
+        dest.writeString(Type);
     }
 }

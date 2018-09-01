@@ -91,10 +91,10 @@ public class JSONUtils {
                 JSONObject currentReview = resultsArray.getJSONObject(i);
 
                 MovieReview review = new MovieReview();
-                review.setmReviewID(currentReview.getString(KEY_REVIEW_JSON_ID));
-                review.setmURL(currentReview.getString(KEY_REVIEW_JSON_URL));
-                review.setmAuthor(currentReview.getString(KEY_REVIEW_JSON_AUTHOR));
-                review.setmContent(currentReview.getString(KEY_REVIEW_JSON_CONTENT));
+                review.setReviewID(currentReview.getString(KEY_REVIEW_JSON_ID));
+                review.setURL(currentReview.getString(KEY_REVIEW_JSON_URL));
+                review.setAuthor(currentReview.getString(KEY_REVIEW_JSON_AUTHOR));
+                review.setContent(currentReview.getString(KEY_REVIEW_JSON_CONTENT));
 
                 movieData.add(review);
             }
@@ -120,12 +120,12 @@ public class JSONUtils {
 
                 MovieVideo video = new MovieVideo();
 
-                video.setmVidID(currentVideo.getString(KEY_VIDEO_JSON_ID));
-                video.setmKey(currentVideo.getString(KEY_VIDEO_JSON_KEY));
-                video.setmName(currentVideo.getString(KEY_VIDEO_JSON_NAME));
-                video.setmSite(currentVideo.getString(KEY_VIDEO_JSON_SITE));
-                video.setmSize(currentVideo.getInt(KEY_VIDEO_JSON_SIZE));
-                video.setmType(currentVideo.getString(KEY_VIDEO_JSON_TYPE));
+                video.setVidID(currentVideo.getString(KEY_VIDEO_JSON_ID));
+                video.setKey(currentVideo.getString(KEY_VIDEO_JSON_KEY));
+                video.setName(currentVideo.getString(KEY_VIDEO_JSON_NAME));
+                video.setSite(currentVideo.getString(KEY_VIDEO_JSON_SITE));
+                video.setSize(currentVideo.getInt(KEY_VIDEO_JSON_SIZE));
+                video.setType(currentVideo.getString(KEY_VIDEO_JSON_TYPE));
 
                 movieData.add(video);
             }

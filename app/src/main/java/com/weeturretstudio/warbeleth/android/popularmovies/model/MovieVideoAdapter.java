@@ -1,6 +1,5 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -37,9 +36,9 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
         int index = parent.getChildAdapterPosition(v);
 
         MovieVideo selectedVideo = movieVideos.get(index);
-        if(selectedVideo.getmSite().equals(SITE_YOUTUBE)) {
+        if(selectedVideo.getSite().equals(SITE_YOUTUBE)) {
             Intent youtubeIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("vnd.youtube://"+selectedVideo.getmKey()));
+                    Uri.parse("vnd.youtube://"+selectedVideo.getKey()));
 
             parent.getContext().startActivity(youtubeIntent);
         }
@@ -85,9 +84,9 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-        holder.SetupViewHolder(movieVideos.get(position).getmName(),
-                                movieVideos.get(position).getmSite(),
-                                movieVideos.get(position).getmKey());
+        holder.SetupViewHolder(movieVideos.get(position).getName(),
+                                movieVideos.get(position).getSite(),
+                                movieVideos.get(position).getKey());
     }
 
     @Override

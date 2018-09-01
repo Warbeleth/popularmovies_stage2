@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.weeturretstudio.warbeleth.android.popularmovies.database.MovieRoom;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReviewAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideoAdapter;
@@ -49,6 +50,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                MovieRoom database = MovieRoom.getDatabase(view.getContext());
+                database.movieDetailsModel().insertMovieDetails(currentMovie);
             }
         });
 

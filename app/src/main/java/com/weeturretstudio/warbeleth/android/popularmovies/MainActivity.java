@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.weeturretstudio.warbeleth.android.popularmovies.database.MovieRoom;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetailsArrayAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static MovieDetailsArrayAdapter movieAdapter = null;
     private static String httpResultString = "";
     private static boolean loadingDetailsActivity = false;
+
+    private MovieRoom databaseObject = null;
 
     private MovieDetails[] currentMovies = null;
 
@@ -55,6 +59,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Register the listener
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        // Load database?
+        databaseObject = MovieRoom.getDatabase(this);
+        List<MovieDetails> data = databaseObject.movieDetailsModel().selectAllMovies();
+
+        if(data != null){
+            Log.v(TAG, "Objects In Database: " + data.size());
+
+            for(int i = 0; i < data.size(); i++)
+                Log.v(TAG, "Movie: " + data.get(i).getMovieName());
+        }
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 /*
 Sample JSON
@@ -20,21 +24,35 @@ Sample JSON
   "total_results": 1
 }
 */
-public class MovieReview implements Parcelable {
-    private String mReviewID;
-    private String mAuthor;
-    private String mContent;
-    private String mURL;
 
+@Entity(tableName = "tbl_related_review")
+public class MovieReview implements Parcelable {
+
+    @PrimaryKey
+    @NonNull
+    private String ReviewID;
+    private String Author;
+    private String Content;
+    private String URL;
+
+    @Ignore
     public MovieReview() {
 
     }
 
+    public MovieReview(String ReviewID, String Author, String Content, String URL) {
+        this.ReviewID = ReviewID;
+        this.Author = Author;
+        this.Content = Content;
+        this.URL = URL;
+    }
+
+    @Ignore
     private MovieReview(Parcel in) {
-        mReviewID = in.readString();
-        mAuthor = in.readString();
-        mContent = in.readString();
-        mURL = in.readString();
+        ReviewID = in.readString();
+        Author = in.readString();
+        Content = in.readString();
+        URL = in.readString();
     }
 
     public static final Creator<MovieReview> CREATOR = new Creator<MovieReview>() {
@@ -49,36 +67,36 @@ public class MovieReview implements Parcelable {
         }
     };
 
-    public String getmReviewID() {
-        return mReviewID;
+    public String getReviewID() {
+        return ReviewID;
     }
 
-    public void setmReviewID(String mReviewID) {
-        this.mReviewID = mReviewID;
+    public void setReviewID(String reviewID) {
+        this.ReviewID = reviewID;
     }
 
-    public String getmAuthor() {
-        return mAuthor;
+    public String getAuthor() {
+        return Author;
     }
 
-    public void setmAuthor(String mAuthor) {
-        this.mAuthor = mAuthor;
+    public void setAuthor(String author) {
+        this.Author = author;
     }
 
-    public String getmContent() {
-        return mContent;
+    public String getContent() {
+        return Content;
     }
 
-    public void setmContent(String mContent) {
-        this.mContent = mContent;
+    public void setContent(String content) {
+        this.Content = content;
     }
 
-    public String getmURL() {
-        return mURL;
+    public String getURL() {
+        return URL;
     }
 
-    public void setmURL(String mURL) {
-        this.mURL = mURL;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
     @Override
@@ -88,9 +106,9 @@ public class MovieReview implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mReviewID);
-        dest.writeString(mAuthor);
-        dest.writeString(mContent);
-        dest.writeString(mURL);
+        dest.writeString(ReviewID);
+        dest.writeString(Author);
+        dest.writeString(Content);
+        dest.writeString(URL);
     }
 }
