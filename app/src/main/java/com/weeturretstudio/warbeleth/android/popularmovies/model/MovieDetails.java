@@ -1,13 +1,19 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+@Entity(tableName = "tbl_movie")
 public class MovieDetails implements Parcelable {
 
     public static final String EXTRA_IDENTIFIER = "KEY_MovieDetails";
+
+    @PrimaryKey
     private int mID;
     private String mMovieName;                      //original_title
     private String mPosterPath;                     //poster_path
@@ -18,15 +24,19 @@ public class MovieDetails implements Parcelable {
     private ArrayList<MovieVideo> mRelatedvideos;   //Videos
 
 
+    @Ignore
     public MovieDetails(){}
 
-    public MovieDetails(int id, String name, String poster, String overview, String releaseDate, String rating) {
+    public MovieDetails(int id, String name, String poster, String overview, String releaseDate, String rating,
+                        ArrayList<MovieReview> reviews, ArrayList<MovieVideo> videos) {
         mID = id;
         mMovieName = name;
         mPosterPath = poster;
         mOverview = overview;
         mReleaseDate = releaseDate;
         mRating = rating;
+        mReviews = reviews;
+        mRelatedvideos = videos;
     }
 
     protected MovieDetails(Parcel in) {
