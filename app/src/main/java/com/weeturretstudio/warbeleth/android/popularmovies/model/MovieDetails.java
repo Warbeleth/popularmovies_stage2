@@ -3,11 +3,13 @@ package com.weeturretstudio.warbeleth.android.popularmovies.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity(tableName = "tbl_movie")
 public class MovieDetails implements Parcelable {
@@ -23,7 +25,7 @@ public class MovieDetails implements Parcelable {
     private String ReleaseDate;                    //release_date
     private String Rating;                         //vote_average
     @Ignore
-    private ArrayList<MovieReview> mReviews;        //Reviews
+    private ArrayList<MovieReview> Reviews;        //Reviews
     @Ignore
     private ArrayList<MovieVideo> mRelatedvideos;   //Videos
 
@@ -49,7 +51,7 @@ public class MovieDetails implements Parcelable {
         Overview = overview;
         ReleaseDate = releaseDate;
         Rating = rating;
-        mReviews = reviews;
+        Reviews = reviews;
         mRelatedvideos = videos;
     }
 
@@ -61,7 +63,7 @@ public class MovieDetails implements Parcelable {
         Overview = in.readString();
         ReleaseDate = in.readString();
         Rating = in.readString();
-        mReviews = in.createTypedArrayList(MovieReview.CREATOR);
+        Reviews = in.createTypedArrayList(MovieReview.CREATOR);
         mRelatedvideos = in.createTypedArrayList(MovieVideo.CREATOR);
     }
 
@@ -125,9 +127,16 @@ public class MovieDetails implements Parcelable {
         this.Rating = mRating;
     }
 
-    public void setReviews(ArrayList<MovieReview> reviews) { this.mReviews = reviews; }
+    public void setReviews(ArrayList<MovieReview> reviews) {
+        this.Reviews = reviews;
 
-    public ArrayList<MovieReview> getRelatedReviews() { return this.mReviews; }
+        if(this.Reviews != null) {
+            for (int i = 0; i < this.Reviews.size(); i++)
+                this.Reviews.get(i).setMovieID(this.ID);
+        }
+    }
+
+    public ArrayList<MovieReview> getReviews() { return this.Reviews; }
 
     public void setRelatedvideos(ArrayList<MovieVideo> relatedvideos) { this.mRelatedvideos = relatedvideos; }
 
@@ -156,7 +165,7 @@ public class MovieDetails implements Parcelable {
         dest.writeString(Overview);
         dest.writeString(ReleaseDate);
         dest.writeString(Rating);
-        dest.writeTypedList(mReviews);
+        dest.writeTypedList(Reviews);
         dest.writeTypedList(mRelatedvideos);
     }
 }

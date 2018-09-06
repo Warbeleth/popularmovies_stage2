@@ -3,7 +3,9 @@ package com.weeturretstudio.warbeleth.android.popularmovies.database;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
@@ -19,12 +21,12 @@ public interface MovieDetailsDao {
     @Query("select * from tbl_movie")
     List<MovieDetails> selectAllMovies();
 
-    @Insert
-    void insertMovieDetails(MovieDetails movieDetails);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(MovieDetails movieDetails);
 
     @Update
-    void updateMovieDetails(MovieDetails movieDetails);
+    void update(MovieDetails... movieDetails);
 
     @Delete
-    void deleteMovieDetails(MovieDetails movieDetails);
+    void delete(MovieDetails... movieDetails);
 }

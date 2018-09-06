@@ -1,11 +1,16 @@
 package com.weeturretstudio.warbeleth.android.popularmovies.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /*
 Sample JSON
@@ -25,9 +30,15 @@ Sample JSON
 }
 */
 
-@Entity(tableName = "tbl_related_review")
+@Entity(tableName = "tbl_review",
+        foreignKeys = @ForeignKey(entity = MovieDetails.class,
+                                    parentColumns = "ID",
+                                    childColumns = "MovieID",
+                                    onDelete = CASCADE))
 public class MovieReview implements Parcelable {
 
+    @ColumnInfo(index = true)
+    private int MovieID;
     @PrimaryKey
     @NonNull
     private String ReviewID;
@@ -40,7 +51,8 @@ public class MovieReview implements Parcelable {
 
     }
 
-    public MovieReview(String ReviewID, String Author, String Content, String URL) {
+    public MovieReview(int MovieID, String ReviewID, String Author, String Content, String URL) {
+        this.MovieID = MovieID;
         this.ReviewID = ReviewID;
         this.Author = Author;
         this.Content = Content;
@@ -49,6 +61,7 @@ public class MovieReview implements Parcelable {
 
     @Ignore
     private MovieReview(Parcel in) {
+        MovieID = in.readInt();
         ReviewID = in.readString();
         Author = in.readString();
         Content = in.readString();
@@ -66,6 +79,10 @@ public class MovieReview implements Parcelable {
             return new MovieReview[size];
         }
     };
+
+    public int getMovieID() { return MovieID; }
+
+    public void setMovieID(int MovieID) { this.MovieID = MovieID; }
 
     public String getReviewID() {
         return ReviewID;
@@ -106,6 +123,7 @@ public class MovieReview implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(MovieID);
         dest.writeString(ReviewID);
         dest.writeString(Author);
         dest.writeString(Content);

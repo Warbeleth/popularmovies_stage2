@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.weeturretstudio.warbeleth.android.popularmovies.database.DatabaseHelper;
 import com.weeturretstudio.warbeleth.android.popularmovies.database.MovieRoom;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetailsArrayAdapter;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static String httpResultString = "";
     private static boolean loadingDetailsActivity = false;
 
-    private MovieRoom databaseObject = null;
+    private DatabaseHelper databaseObject = null;
 
     private MovieDetails[] currentMovies = null;
 
@@ -61,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         // Load database?
-        databaseObject = MovieRoom.getDatabase(this);
-        List<MovieDetails> data = databaseObject.movieDetailsModel().selectAllMovies();
+        databaseObject = DatabaseHelper.getInstance(this, false);
+        List<MovieDetails> data = databaseObject.getAllMovies();
 
         if(data != null){
             Log.v(TAG, "Objects In Database: " + data.size());

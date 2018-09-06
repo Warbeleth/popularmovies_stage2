@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.weeturretstudio.warbeleth.android.popularmovies.database.DatabaseHelper;
 import com.weeturretstudio.warbeleth.android.popularmovies.database.MovieRoom;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReviewAdapter;
@@ -48,11 +49,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Movie added to favorites", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                MovieRoom database = MovieRoom.getDatabase(view.getContext());
-                database.movieDetailsModel().insertMovieDetails(currentMovie);
+                DatabaseHelper.getInstance(view.getContext(), false).saveMovie(currentMovie);
             }
         });
 
@@ -134,7 +134,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
             Log.v(TAG, "LoadFinished for REVIEW endpoint: " + data);
             currentMovie.setReviews(JSONUtils.parseReviews(JSONUtils.parseStringToJSON(data)));
             //ScrollView reviews = findViewById(R.id.Reviews_Scrollview);
-            ((MovieReviewAdapter)reviewView.getAdapter()).setReviews(currentMovie.getRelatedReviews());
+            ((MovieReviewAdapter)reviewView.getAdapter()).setReviews(currentMovie.getReviews());
         }
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
@@ -150,8 +150,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
 
         if(currentMovie != null) {
             //Toggle visibility based on reviews
-            if (currentMovie.getRelatedReviews() != null
-                    && currentMovie.getRelatedReviews().size() == 0)
+            if (currentMovie.getReviews() != null
+                    && currentMovie.getReviews().size() == 0)
                 reviewView.setVisibility(View.GONE);
             else
                 reviewView.setVisibility(View.VISIBLE);
