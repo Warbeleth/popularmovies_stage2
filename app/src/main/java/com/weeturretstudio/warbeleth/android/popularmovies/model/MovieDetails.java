@@ -3,13 +3,11 @@ package com.weeturretstudio.warbeleth.android.popularmovies.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Relation;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity(tableName = "tbl_movie")
 public class MovieDetails implements Parcelable {

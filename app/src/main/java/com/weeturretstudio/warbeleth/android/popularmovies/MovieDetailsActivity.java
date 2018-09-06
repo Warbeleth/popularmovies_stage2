@@ -1,6 +1,7 @@
 package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.weeturretstudio.warbeleth.android.popularmovies.database.DatabaseHelper;
-import com.weeturretstudio.warbeleth.android.popularmovies.database.MovieRoom;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReviewAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideoAdapter;
@@ -45,7 +44,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
 
         detailsActivityContainer = findViewById(R.id.details_activity_scrollview);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,14 +55,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
             }
         });
 
-        trailerView = (RecyclerView)findViewById(R.id.Trailers_ScrollView);
+        trailerView = findViewById(R.id.Trailers_ScrollView);
         LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this );
                                         //LinearLayoutManager.HORIZONTAL, false);
         trailerView.setLayoutManager(trailerLayoutManager);
         MovieVideoAdapter mvAdapter = new MovieVideoAdapter(null);
         trailerView.setAdapter(mvAdapter);
 
-        reviewView = (RecyclerView)findViewById(R.id.Reviews_Scrollview);
+        reviewView = findViewById(R.id.Reviews_Scrollview);
         LinearLayoutManager verticalLayoutManager = new LinearLayoutManager(this);
         reviewView.setLayoutManager(verticalLayoutManager);
         MovieReviewAdapter mrAdapter = new MovieReviewAdapter(null);

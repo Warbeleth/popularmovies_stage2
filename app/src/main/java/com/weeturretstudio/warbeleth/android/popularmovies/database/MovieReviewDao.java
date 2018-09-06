@@ -25,8 +25,12 @@ public interface MovieReviewDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(MovieReview movieReview);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(List<MovieReview> movieReviews);
+
     @Update
-    void update(MovieReview... movieReviews);
+    void update(MovieReview movieReviews);
     @Delete
-    void delete(MovieReview... movieReviews);
+    void delete(MovieReview movieReviews);
 }

@@ -47,8 +47,7 @@ public class DatabaseHelper {
     public void saveMovie(MovieDetails movie) {
         database.MovieDao().insert(movie);
 
-        for(int i = 0; i < movie.getReviews().size(); i++)
-            database.ReviewDao().insert(movie.getReviews().get(i));
+        database.ReviewDao().insert(movie.getReviews());
     }
 
     public List<MovieDetails> getAllMovies() {
@@ -63,11 +62,10 @@ public class DatabaseHelper {
     }
 
     public void saveMovies(@NonNull List<MovieDetails> movies) {
-        for(int index = 0; index < movies.size(); index++) {
-            database.MovieDao().insert(movies.get(index));
+        database.MovieDao().insert(movies);
 
-            for(int reviewIndex = 0; reviewIndex < movies.get(index).getReviews().size(); reviewIndex++)
-                database.ReviewDao().insert(movies.get(index).getReviews().get(reviewIndex));
+        for(int index = 0; index < movies.size(); index++) {
+            database.ReviewDao().insert(movies.get(index).getReviews());
         }
     }
 }

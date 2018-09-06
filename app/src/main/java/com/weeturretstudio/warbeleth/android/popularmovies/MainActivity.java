@@ -11,14 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.weeturretstudio.warbeleth.android.popularmovies.database.DatabaseHelper;
-import com.weeturretstudio.warbeleth.android.popularmovies.database.MovieRoom;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetailsArrayAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
