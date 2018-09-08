@@ -3,9 +3,12 @@ package com.weeturretstudio.warbeleth.android.popularmovies.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import com.weeturretstudio.warbeleth.android.popularmovies.database.converters.MovieVideoConverter;
 
 import java.util.ArrayList;
 
@@ -24,8 +27,9 @@ public class MovieDetails implements Parcelable {
     private String Rating;                         //vote_average
     @Ignore
     private ArrayList<MovieReview> Reviews;        //Reviews
-    @Ignore
-    private ArrayList<MovieVideo> mRelatedvideos;   //Videos
+
+    @TypeConverters(MovieVideoConverter.class)
+    private ArrayList<MovieVideo> Videos;   //Videos
 
 
     @Ignore
@@ -50,7 +54,7 @@ public class MovieDetails implements Parcelable {
         ReleaseDate = releaseDate;
         Rating = rating;
         Reviews = reviews;
-        mRelatedvideos = videos;
+        Videos = videos;
     }
 
     @Ignore
@@ -62,7 +66,7 @@ public class MovieDetails implements Parcelable {
         ReleaseDate = in.readString();
         Rating = in.readString();
         Reviews = in.createTypedArrayList(MovieReview.CREATOR);
-        mRelatedvideos = in.createTypedArrayList(MovieVideo.CREATOR);
+        Videos = in.createTypedArrayList(MovieVideo.CREATOR);
     }
 
     public static final Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
@@ -136,9 +140,9 @@ public class MovieDetails implements Parcelable {
 
     public ArrayList<MovieReview> getReviews() { return this.Reviews; }
 
-    public void setRelatedvideos(ArrayList<MovieVideo> relatedvideos) { this.mRelatedvideos = relatedvideos; }
+    public void setVideos(ArrayList<MovieVideo> videos) { this.Videos = videos; }
 
-    public ArrayList<MovieVideo> getRelatedVideos() { return this.mRelatedvideos; }
+    public ArrayList<MovieVideo> getVideos() { return this.Videos; }
 
     @Override
     public String toString() {
@@ -164,6 +168,6 @@ public class MovieDetails implements Parcelable {
         dest.writeString(ReleaseDate);
         dest.writeString(Rating);
         dest.writeTypedList(Reviews);
-        dest.writeTypedList(mRelatedvideos);
+        dest.writeTypedList(Videos);
     }
 }

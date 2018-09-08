@@ -137,9 +137,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
         }
         else if(loader.getId() == TRAILER_ENDPOINT_ID) {
             Log.v(TAG, "LoadFinished for TRAILER endpoint: " + data);
-            currentMovie.setRelatedvideos(JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data)));
+            currentMovie.setVideos(JSONUtils.parseVideos(JSONUtils.parseStringToJSON(data)));
 
-            ((MovieVideoAdapter)trailerView.getAdapter()).setVideos(currentMovie.getRelatedVideos());
+            ((MovieVideoAdapter)trailerView.getAdapter()).setVideos(currentMovie.getVideos());
         }
 
         updateScrollPosition();
@@ -156,8 +156,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
                 reviewView.setVisibility(View.VISIBLE);
 
             //Toggle visibility based on videos
-            if (currentMovie.getRelatedVideos() != null
-                    && currentMovie.getRelatedVideos().size() == 0)
+            if (currentMovie.getVideos() != null
+                    && currentMovie.getVideos().size() == 0)
                 trailerView.setVisibility(View.GONE);
             else
                 trailerView.setVisibility(View.VISIBLE);

@@ -9,7 +9,7 @@ import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReview;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideo;
 
-@Database(version = 2,
+@Database(version = 3,
         entities = { MovieDetails.class, MovieReview.class, MovieVideo.class },
         exportSchema = false)
 public abstract class MovieRoom extends RoomDatabase {
