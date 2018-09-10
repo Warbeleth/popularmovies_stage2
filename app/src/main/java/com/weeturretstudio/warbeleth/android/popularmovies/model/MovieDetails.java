@@ -18,7 +18,6 @@ public class MovieDetails implements Parcelable {
     public static final String EXTRA_IDENTIFIER = "KEY_MovieDetails";
 
     @PrimaryKey
-    @NonNull
     private int ID;
     private String MovieName;                      //original_title
     private String PosterPath;                     //poster_path
@@ -80,6 +79,18 @@ public class MovieDetails implements Parcelable {
             return new MovieDetails[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == this)
+            return true;
+
+        if(!(o instanceof MovieDetails))
+            return false;
+
+        MovieDetails movie = (MovieDetails)o;
+        return movie.getID() == this.getID();
+    }
 
     public int getID() {
         return ID;

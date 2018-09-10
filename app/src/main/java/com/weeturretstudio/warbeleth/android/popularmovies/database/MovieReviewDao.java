@@ -30,7 +30,14 @@ public interface MovieReviewDao {
     void insert(List<MovieReview> movieReviews);
 
     @Update
-    void update(MovieReview movieReviews);
+    void update(MovieReview movieReview);
+
+    @Update
+    void update(List<MovieReview> movieReviews);
+
     @Delete
-    void delete(MovieReview movieReviews);
+    void delete(MovieReview movieReview);
+
+    @Delete
+    void delete(List<MovieReview> movieReviews);
 }

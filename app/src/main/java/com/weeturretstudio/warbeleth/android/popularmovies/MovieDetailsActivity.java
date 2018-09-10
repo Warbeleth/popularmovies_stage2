@@ -19,10 +19,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.weeturretstudio.warbeleth.android.popularmovies.database.DatabaseHelper;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieReviewAdapter;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieVideoAdapter;
+import com.weeturretstudio.warbeleth.android.popularmovies.utilities.FavoritesUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.UrlAsyncLoader;
@@ -44,14 +44,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
 
         detailsActivityContainer = findViewById(R.id.details_activity_scrollview);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Movie added to favorites", Snackbar.LENGTH_LONG)
+                boolean result = FavoritesUtils.getInstance().saveOrRemoveFavorite(currentMovie);
+
+                String addOrRemove = result ? "added to" : "removed from";
+
+                Snackbar.make(view, "Movie " + addOrRemove + " favorites", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                DatabaseHelper.getInstance(view.getContext(), false).saveMovie(currentMovie);
+                toggleFavorites(result, fab);
             }
         });
 
@@ -87,6 +91,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
                 //Store the currently selected movie.
                 currentMovie = selectedMovie;
 
+                toggleFavorites(FavoritesUtils.getInstance().findInFavorites(currentMovie), fab);
+
                 getSupportLoaderManager().initLoader(REVIEW_ENDPOINT_ID,
                         null,this);
 
@@ -106,12 +112,21 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
                     ((TextView)findViewById(R.id.tv_ml_details_overview_value)).setText(selectedMovie.getOverview());
 
                 if(selectedMovie.getPosterPath() != null)
-                    Picasso.with(this).load(NetworkUtils.getPosterUri(selectedMovie.getPosterPath()))
+                    Picasso.get().load(NetworkUtils.getPosterUri(selectedMovie.getPosterPath()))
                         .fit()
                         .centerInside()
                         .into(((ImageView)findViewById(R.id.iv_details_movie_poster)));
             }
         }
+    }
+
+    public void toggleFavorites(boolean toggle, FloatingActionButton fab) {
+        if(toggle)
+            fab.setImageResource(android.R.drawable.btn_star_big_on);
+        else
+            fab.setImageResource(android.R.drawable.btn_star_big_off);
+
+        fab.invalidate();
     }
 
     @NonNull

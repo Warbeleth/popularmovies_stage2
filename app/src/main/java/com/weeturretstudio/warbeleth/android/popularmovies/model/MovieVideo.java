@@ -40,7 +40,7 @@ public class MovieVideo implements Parcelable {
     @Ignore
     public MovieVideo(){}
 
-    public MovieVideo(String VidID, String Key, String Name, String Site, int Size, String Type)
+    public MovieVideo(@NonNull String VidID, String Key, String Name, String Site, int Size, String Type)
     {
         this.VidID = VidID;
         this.Key = Key;
@@ -72,11 +72,12 @@ public class MovieVideo implements Parcelable {
         }
     };
 
+    @NonNull
     public String getVidID() {
         return VidID;
     }
 
-    public void setVidID(String vidID) {
+    public void setVidID(@NonNull String vidID) {
         this.VidID = vidID;
     }
 

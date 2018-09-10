@@ -19,8 +19,7 @@ public class MovieVideoConverter {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<MovieVideo>>(){}.getType();
 
-        String json = gson.toJson(movieVideos, type);
-        return json;
+        return gson.toJson(movieVideos, type);
     }
 
     @TypeConverter
@@ -31,7 +30,6 @@ public class MovieVideoConverter {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<MovieVideo>>(){}.getType();
 
-        ArrayList<MovieVideo> movieVideoList = gson.fromJson(movieVideos, type);
-        return movieVideoList;
+        return gson.fromJson(movieVideos, type);
     }
 }

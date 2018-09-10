@@ -39,7 +39,7 @@ public class DatabaseHelper {
         MovieDetails movie = database.MovieDao().selectMovieByID(id);
         List<MovieReview> reviews = database.ReviewDao().selectAllReviewsForMovie(id);
 
-        movie.setReviews(new ArrayList<MovieReview>(reviews));
+        movie.setReviews(new ArrayList<>(reviews));
 
         return movie;
     }
@@ -50,12 +50,22 @@ public class DatabaseHelper {
         database.ReviewDao().insert(movie.getReviews());
     }
 
+    public void updateMovie(MovieDetails movie) {
+        database.MovieDao().update(movie);
+
+        database.ReviewDao().update(movie.getReviews());
+    }
+
+    public void deleteMovie(MovieDetails movie) {
+        database.MovieDao().delete(movie);
+    }
+
     public List<MovieDetails> getAllMovies() {
         List<MovieDetails> movies = database.MovieDao().selectAllMovies();
 
         for(int i = 0; i < movies.size(); i++) {
             List<MovieReview> reviews = database.ReviewDao().selectAllReviewsForMovie(movies.get(i).getID());
-            movies.get(i).setReviews(new ArrayList<MovieReview>(reviews));
+            movies.get(i).setReviews(new ArrayList<>(reviews));
         }
 
         return movies;

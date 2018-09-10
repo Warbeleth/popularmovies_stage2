@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies</string>
+    <string name="app_name">Popular Movies, Stage 2</string>
     <string name="action_settings">Settings</string>
     <string name="key_popularmovies">sortByPopularMovies</string>
     <string name="key_topratedmovies">sortByTopRatedMovies</string>
@@ -12,4 +12,7 @@
     <string name="placeholder_rating">Placeholder: Rating</string>
     <string name="movie_overview_header">Movie Overview</string>
     <string name="placeholder_movie_overview">Placeholder: Movie Overview</string>
+    <string name="trailer_description">Trailer Play Button</string>
+    <string name="trailer_title_placeholder">Title: Placeholder</string>
+    <string name="review_author">Author:</string>
 </resources>

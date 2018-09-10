@@ -17,9 +17,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.weeturretstudio.warbeleth.android.popularmovies.database.DatabaseHelper;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetails;
 import com.weeturretstudio.warbeleth.android.popularmovies.model.MovieDetailsArrayAdapter;
+import com.weeturretstudio.warbeleth.android.popularmovies.utilities.FavoritesUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.JSONUtils;
 import com.weeturretstudio.warbeleth.android.popularmovies.utilities.NetworkUtils;
 
@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,
@@ -36,13 +35,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MOVIE_API_LOADER_ID = 323272;
-    private static MovieDetailsArrayAdapter movieAdapter = null;
-    private static String httpResultString = "";
     private static boolean loadingDetailsActivity = false;
 
-    private DatabaseHelper databaseObject = null;
-
-    private MovieDetails[] currentMovies = null;
+    private FavoritesUtils favorites = null;
+    private List<MovieDetails> currentMovies = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +47,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         getSupportLoaderManager().initLoader(
                 MOVIE_API_LOADER_ID,
                 null,
                 MainActivity.this);
+                */
 
         // Register the listener
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-        // Load database?
-        databaseObject = DatabaseHelper.getInstance(this, false);
-        List<MovieDetails> data = databaseObject.getAllMovies();
+        // Initialize Favorites
+        favorites = FavoritesUtils.getInstance().populateFavorites(this, false);
+        List<MovieDetails> data = favorites.getFavorites();
 
         if(data != null){
             Log.v(TAG, "Objects In Database: " + data.size());
@@ -70,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             for(int i = 0; i < data.size(); i++)
                 Log.v(TAG, "Movie: " + data.get(i).getMovieName());
         }
+
+        //Once everything is ready, begin loading
+        loadFromDatabaseOrNetwork();
     }
 
     @Override
@@ -98,10 +99,48 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        getSupportLoaderManager().restartLoader(
-                MOVIE_API_LOADER_ID,
-                null,
-                MainActivity.this);
+        loadFromDatabaseOrNetwork();
+    }
+
+    private void loadFromDatabaseOrNetwork() {
+        //IF we're sorting by favorites, which are stored locally... use database instead of loader.
+        if(android.preference.PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+                this.getString(R.string.key_favoritemovies),
+                this.getResources().getBoolean(R.bool.preference_FavoriteMovies_Default))) {
+
+            currentMovies = favorites.getFavorites();
+            setupViewAfterLoading();
+        }
+        else {
+            getSupportLoaderManager().restartLoader(
+                    MOVIE_API_LOADER_ID,
+                    null,
+                    MainActivity.this);
+        }
+    }
+
+    private void setupViewAfterLoading() {
+        MovieDetailsArrayAdapter movieAdapter = new MovieDetailsArrayAdapter(
+                MainActivity.this, currentMovies);
+
+        GridView gridView = MainActivity.this.findViewById(R.id.main_gridview);
+        gridView.setAdapter(movieAdapter);
+
+        //Generate onItemClick listener to handle clicks
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if(!loadingDetailsActivity) {
+                    loadingDetailsActivity = true;
+                    MovieDetails nestedDetails = (MovieDetails) parent.getItemAtPosition(position);
+                    Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
+                    launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
+                    startActivity(launchDetailsActivity);
+                    loadingDetailsActivity = false;
+                }
+            }
+        });
     }
 
     private static class MovieLoader extends AsyncTaskLoader<String> {
@@ -136,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return null;
 
             try {
-                httpResultString = NetworkUtils.getResponseFromHttpUrl(getContext(), apiURL);
+                String httpResultString = NetworkUtils.getResponseFromHttpUrl(getContext(), apiURL);
                 Log.v(TAG, "Popular Movies: " + httpResultString);
                 return httpResultString;
             } catch (IOException e) {
@@ -161,32 +200,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             JSONObject parsedObject = JSONUtils.parseStringToJSON(data);
             currentMovies = JSONUtils.parseMovies(parsedObject);
             Log.v(TAG, "Current Movies:");
-            for(int i = 0; i < currentMovies.length; i++)
-                Log.v(TAG, "Movie["+i+"]: " + currentMovies[i].getMovieName() + "\n");
-
-            movieAdapter = new MovieDetailsArrayAdapter(
-                    MainActivity.this,
-                    Arrays.asList(currentMovies));
-
-            GridView gridView = MainActivity.this.findViewById(R.id.main_gridview);
-            gridView.setAdapter(movieAdapter);
-
-            //Generate onItemClick listener to handle clicks
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    if(!loadingDetailsActivity) {
-                        loadingDetailsActivity = true;
-                        MovieDetails nestedDetails = (MovieDetails) parent.getItemAtPosition(position);
-                        Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
-                        launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
-                        startActivity(launchDetailsActivity);
-                        loadingDetailsActivity = false;
-                    }
-                }
-            });
+            for(int i = 0; i < currentMovies.size(); i++)
+                Log.v(TAG, "Movie["+i+"]: " + currentMovies.get(i).getMovieName() + "\n");
         }
+
+        setupViewAfterLoading();
     }
 
     @Override

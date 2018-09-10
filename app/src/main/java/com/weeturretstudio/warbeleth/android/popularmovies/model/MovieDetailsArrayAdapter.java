@@ -30,7 +30,7 @@ public class MovieDetailsArrayAdapter extends ArrayAdapter<MovieDetails> {
 
         ImageView thumbnail = (ImageView)convertView;
         if (movieDetails != null) {
-            Picasso.with(getContext()).load(
+            Picasso.get().load(
                     NetworkUtils.getPosterUri(movieDetails.getPosterPath()))
                     .into(thumbnail);
         }

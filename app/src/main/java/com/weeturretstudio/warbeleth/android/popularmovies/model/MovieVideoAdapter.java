@@ -80,8 +80,7 @@ public class MovieVideoAdapter extends RecyclerView.Adapter<MovieVideoAdapter.Vi
 
         view.setOnClickListener(this);
 
-        VideoViewHolder viewHolder = new VideoViewHolder(view);
-        return viewHolder;
+        return new VideoViewHolder(view);
     }
 
     @Override

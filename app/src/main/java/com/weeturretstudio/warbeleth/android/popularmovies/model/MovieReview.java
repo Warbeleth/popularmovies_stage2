@@ -50,7 +50,7 @@ public class MovieReview implements Parcelable {
 
     }
 
-    public MovieReview(int MovieID, String ReviewID, String Author, String Content, String URL) {
+    public MovieReview(int MovieID,@NonNull String ReviewID, String Author, String Content, String URL) {
         this.MovieID = MovieID;
         this.ReviewID = ReviewID;
         this.Author = Author;
@@ -83,11 +83,12 @@ public class MovieReview implements Parcelable {
 
     public void setMovieID(int MovieID) { this.MovieID = MovieID; }
 
+    @NonNull
     public String getReviewID() {
         return ReviewID;
     }
 
-    public void setReviewID(String reviewID) {
+    public void setReviewID(@NonNull String reviewID) {
         this.ReviewID = reviewID;
     }
 

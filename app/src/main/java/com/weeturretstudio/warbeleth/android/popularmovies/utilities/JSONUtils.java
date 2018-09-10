@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class JSONUtils {
     private static final String TAG = JSONUtils.class.getSimpleName();
@@ -51,7 +53,7 @@ public class JSONUtils {
         return result;
     }
 
-    public static MovieDetails[] parseMovies(JSONObject parseMe) {
+    public static List<MovieDetails> parseMovies(JSONObject parseMe) {
         Log.v(TAG, "parseMovies: " + parseMe.toString());
 
         try {
@@ -71,7 +73,7 @@ public class JSONUtils {
                 movieData[i].setRating(currentMovie.getString(KEY_JSON_RATING));
             }
 
-            return movieData;
+            return Arrays.asList(movieData);
 
         } catch (JSONException e) {
             Log.e(TAG, "parseMovies: " + e.getMessage());

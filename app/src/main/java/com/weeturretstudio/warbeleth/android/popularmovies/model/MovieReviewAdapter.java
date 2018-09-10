@@ -57,8 +57,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
         View view = inflater.inflate(layoutIdForVideo, parent,
                 shouldAttachImmediately);
-        MovieReviewAdapter.ReviewViewHolder viewHolder = new MovieReviewAdapter.ReviewViewHolder(view);
-        return viewHolder;
+        return new ReviewViewHolder(view);
     }
 
     @Override
