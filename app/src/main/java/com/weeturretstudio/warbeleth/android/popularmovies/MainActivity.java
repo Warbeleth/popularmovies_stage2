@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //Once everything is ready, begin loading
         for(String key : sharedPreferences.getAll().keySet()) {
+            if(key.equals(KeyScrollPosition))
+                continue;
+
             boolean currentValue = sharedPreferences.getBoolean(key, false);
 
             if(currentValue) {
