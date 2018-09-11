@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>,
@@ -37,8 +38,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int MOVIE_API_LOADER_ID = 323272;
     private static boolean loadingDetailsActivity = false;
 
+    MovieDetailsArrayAdapter movieAdapter = null;
+    GridView gridView = null;
     private FavoritesUtils favorites = null;
     private List<MovieDetails> currentMovies = null;
+
+    private final String KeyScrollPosition = "KeyScrollPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setupGridView();
 
         /*
         getSupportLoaderManager().initLoader(
@@ -70,7 +77,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         //Once everything is ready, begin loading
-        loadFromDatabaseOrNetwork();
+        for(String key : sharedPreferences.getAll().keySet()) {
+            boolean currentValue = sharedPreferences.getBoolean(key, false);
+
+            if(currentValue) {
+                loadFromDatabaseOrNetwork(key);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().putInt(KeyScrollPosition, gridView.getFirstVisiblePosition()).apply();
+
+        super.onPause();
     }
 
     @Override
@@ -99,19 +121,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        loadFromDatabaseOrNetwork();
+        if(key.equals(KeyScrollPosition))
+            return;
+
+        boolean isChecked = sharedPreferences.getBoolean(key, false);
+        Log.v(TAG, "Key: " + key + " is checked: " + isChecked);
+
+        if(isChecked)
+            loadFromDatabaseOrNetwork(key);
     }
 
-    private void loadFromDatabaseOrNetwork() {
+    private void loadFromDatabaseOrNetwork(String key) {
         //IF we're sorting by favorites, which are stored locally... use database instead of loader.
-        if(android.preference.PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
-                this.getString(R.string.key_favoritemovies),
-                this.getResources().getBoolean(R.bool.preference_FavoriteMovies_Default))) {
+        Log.v(TAG, "LoadFromDatabaseOrNetwork: Current Key is " + key);
 
+        if(key.equals(this.getString(R.string.key_favoritemovies))) {
+            getSupportLoaderManager().destroyLoader(MOVIE_API_LOADER_ID);
+            Log.v(TAG, "LoadFromDatabaseOrNetwork: Load from database");
             currentMovies = favorites.getFavorites();
-            setupViewAfterLoading();
+            //setupViewAfterLoading();
+            favorites.setMovieAdapter(movieAdapter);
+            updateScrollPosition();
         }
         else {
+            favorites.setMovieAdapter(null);
+            Log.v(TAG, "LoadFromDatabaseOrNetwork: Load from network");
             getSupportLoaderManager().restartLoader(
                     MOVIE_API_LOADER_ID,
                     null,
@@ -119,13 +153,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    private void updateScrollPosition() {
+        if(movieAdapter.getCount() > 0) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            gridView.setSelection(sharedPreferences.getInt(KeyScrollPosition, 0));
+        }
+    }
+
     private void setupViewAfterLoading() {
-        MovieDetailsArrayAdapter movieAdapter = new MovieDetailsArrayAdapter(
-                MainActivity.this, currentMovies);
+        movieAdapter.clear();
+        movieAdapter.addAll(currentMovies);
+        movieAdapter.notifyDataSetChanged();
+    }
 
-        GridView gridView = MainActivity.this.findViewById(R.id.main_gridview);
+    private void setupGridView() {
+        movieAdapter = new MovieDetailsArrayAdapter(
+                MainActivity.this, new ArrayList<MovieDetails>());
+        gridView = MainActivity.this.findViewById(R.id.main_gridview);
         gridView.setAdapter(movieAdapter);
-
         //Generate onItemClick listener to handle clicks
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -169,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         @Override
         public String loadInBackground() {
+            Log.v(TAG, "LoadInBackground: ");
             URL apiURL = NetworkUtils.getMoviesUrl(mainActivity.get());
 
             if(apiURL == null)
@@ -205,10 +251,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         setupViewAfterLoading();
+        updateScrollPosition();
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<String> loader) {
         //TODO: What should be done on reset?
+        Log.v(TAG, "OnLoaderReset: ");
     }
 }

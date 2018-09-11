@@ -2,13 +2,17 @@ package com.weeturretstudio.warbeleth.android.popularmovies;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements
         SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
+
+    private final String TAG = SettingsFragment.class.getName();
 
     private CheckBoxPreference mPopularMovies = null;
     private CheckBoxPreference mTopRatedMovies = null;
@@ -33,11 +37,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         //Identify the changed preference
         Preference preference = findPreference(key);
+        Log.v(TAG, "Preference Changed: " + key);
 
         if(null != preference) {
             //Update summary
             if(preference instanceof CheckBoxPreference) {
-                Log.v("Temp", "Key: " + preference.getKey() + " Value: " + preference.toString());
+                Log.v(TAG, "Key: " + preference.getKey() + " Value: " + preference.toString());
 
                 if(preference.getKey().equals(getString(R.string.key_popularmovies)) && mPopularMovies.isChecked()) {
                     mTopRatedMovies.setChecked(false);
