@@ -93,10 +93,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
 
                 toggleFavorites(FavoritesUtils.getInstance().findInFavorites(currentMovie), fab);
 
-                getSupportLoaderManager().initLoader(REVIEW_ENDPOINT_ID,
+                if(currentMovie.getReviews() != null)
+                    ((MovieReviewAdapter)reviewView.getAdapter()).setReviews(currentMovie.getReviews());
+                else
+                    getSupportLoaderManager().initLoader(REVIEW_ENDPOINT_ID,
                         null,this);
 
-                getSupportLoaderManager().initLoader(TRAILER_ENDPOINT_ID,
+                if(currentMovie.getVideos() != null)
+                    ((MovieVideoAdapter)trailerView.getAdapter()).setVideos(currentMovie.getVideos());
+                else
+                    getSupportLoaderManager().initLoader(TRAILER_ENDPOINT_ID,
                         null,this);
 
                 if(selectedMovie.getMovieName() != null)
@@ -118,6 +124,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements LoaderMan
                         .into(((ImageView)findViewById(R.id.iv_details_movie_poster)));
             }
         }
+
+        updateScrollPosition();
     }
 
     public void toggleFavorites(boolean toggle, FloatingActionButton fab) {

@@ -25,9 +25,9 @@ public class FavoritesUtils {
     private MovieDetailsArrayAdapter movieAdapter = null;
 
 
-    private void FavoritesUtils(){}
+    private FavoritesUtils(){}
 
-    public static FavoritesUtils getInstance() {
+    synchronized public static FavoritesUtils getInstance() {
         if(INSTANCE == null) {
             INSTANCE = new FavoritesUtils();
         }
@@ -35,21 +35,28 @@ public class FavoritesUtils {
         return INSTANCE;
     }
 
-    public FavoritesUtils populateFavorites(Context context, boolean inMemory) {
+    synchronized public FavoritesUtils populateFavorites(Context context, boolean inMemory) {
         this.context = context;
         database = DatabaseHelper.getInstance(context,inMemory);
 
         Log.v(TAG, "Populating Favorites: ...");
         if(favoriteMovies == null)
             favoriteMovies = new MutableLiveData<ArrayList<MovieDetails>>();
-        favoriteMovies.setValue(new ArrayList<MovieDetails>(database.getAllMovies()));
-        Log.v(TAG, "Populating Favorites: " + favoriteMovies.getValue().size() + " found.");
 
+        List<MovieDetails> movies = database.getAllMovies();
+
+        if(movies != null) {
+            favoriteMovies.setValue(new ArrayList<MovieDetails>(movies));
+            Log.v(TAG, "Populating Favorites: " + favoriteMovies.getValue().size() + " found.");
+        }
         return getInstance();
     }
 
     public List<MovieDetails> getFavorites() {
-        return favoriteMovies.getValue();
+        if(favoriteMovies != null)
+            return favoriteMovies.getValue();
+        else
+            return null;
     }
 
     public boolean findInFavorites(int id) {

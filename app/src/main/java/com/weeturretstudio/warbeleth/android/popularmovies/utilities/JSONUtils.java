@@ -44,6 +44,10 @@ public class JSONUtils {
 
     public static JSONObject parseStringToJSON(String jsonString) {
         JSONObject result = null;
+
+        if(jsonString == null || jsonString.length() == 0)
+            return null;
+
         try {
             result = new JSONObject(jsonString);
         } catch (JSONException e) {
@@ -54,9 +58,8 @@ public class JSONUtils {
     }
 
     public static List<MovieDetails> parseMovies(JSONObject parseMe) {
-        Log.v(TAG, "parseMovies: " + parseMe.toString());
-
         try {
+            Log.v(TAG, "parseMovies: " + parseMe.toString());
             JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);
             int numResults = resultsArray.length();
             MovieDetails[] movieData = new MovieDetails[numResults];
@@ -79,12 +82,17 @@ public class JSONUtils {
             Log.e(TAG, "parseMovies: " + e.getMessage());
             e.printStackTrace();
             return null;
+        } catch (Exception e) {
+            Log.e(TAG, "parseMovies: - Unexpected Exception " + e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 
     public static ArrayList<MovieReview> parseReviews(JSONObject parseMe) {
-        Log.v(TAG, "parseReviews: " + parseMe.toString());
         try {
+            Log.v(TAG, "parseReviews: " + parseMe.toString());
+
             JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);
             int numResults = resultsArray.length();
             ArrayList<MovieReview> movieData = new ArrayList<>(numResults);
@@ -107,12 +115,17 @@ public class JSONUtils {
             Log.e(TAG, "parseReviews: " + e.getMessage());
             e.printStackTrace();
             return null;
+        } catch (Exception e) {
+            Log.e(TAG, "parseReviews: - Unexpected Exception " + e.getMessage());
+            e.printStackTrace();
+            return null;
         }
     }
 
     public static ArrayList<MovieVideo> parseVideos(JSONObject parseMe) {
-        Log.v(TAG, "parseVideos: " + parseMe.toString());
         try {
+            Log.v(TAG, "parseVideos: " + parseMe.toString());
+
             JSONArray resultsArray = parseMe.getJSONArray(KEY_JSON_RESULTS);
             int numResults = resultsArray.length();
             ArrayList<MovieVideo> movieData = new ArrayList<>(numResults);
@@ -136,6 +149,10 @@ public class JSONUtils {
 
         } catch (JSONException e) {
             Log.e(TAG, "parseVideos: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            Log.e(TAG, "parseVideos: - Unexpected Exception " + e.getMessage());
             e.printStackTrace();
             return null;
         }

@@ -130,8 +130,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         boolean isChecked = sharedPreferences.getBoolean(key, false);
         Log.v(TAG, "Key: " + key + " is checked: " + isChecked);
 
-        if(isChecked)
+        if(isChecked) {
+            if(movieAdapter != null) {
+                movieAdapter.clear();
+                movieAdapter.notifyDataSetChanged();
+            }
             loadFromDatabaseOrNetwork(key);
+        }
     }
 
     private void loadFromDatabaseOrNetwork(String key) {
@@ -165,7 +170,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void setupViewAfterLoading() {
         movieAdapter.clear();
-        movieAdapter.addAll(currentMovies);
+        if(currentMovies != null)
+            movieAdapter.addAll(currentMovies);
         movieAdapter.notifyDataSetChanged();
     }
 
@@ -182,9 +188,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if(!loadingDetailsActivity) {
                     loadingDetailsActivity = true;
                     MovieDetails nestedDetails = (MovieDetails) parent.getItemAtPosition(position);
-                    Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
-                    launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
-                    startActivity(launchDetailsActivity);
+
+                    if(nestedDetails != null) {
+                        Intent launchDetailsActivity = new Intent(parent.getContext(), MovieDetailsActivity.class);
+                        launchDetailsActivity.putExtra(MovieDetails.EXTRA_IDENTIFIER, nestedDetails);
+                        startActivity(launchDetailsActivity);
+                    }
                     loadingDetailsActivity = false;
                 }
             }
@@ -225,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             try {
                 String httpResultString = NetworkUtils.getResponseFromHttpUrl(getContext(), apiURL);
+
                 Log.v(TAG, "Popular Movies: " + httpResultString);
                 return httpResultString;
             } catch (IOException e) {
@@ -249,8 +259,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             JSONObject parsedObject = JSONUtils.parseStringToJSON(data);
             currentMovies = JSONUtils.parseMovies(parsedObject);
             Log.v(TAG, "Current Movies:");
-            for(int i = 0; i < currentMovies.size(); i++)
-                Log.v(TAG, "Movie["+i+"]: " + currentMovies.get(i).getMovieName() + "\n");
+
+            if(currentMovies != null) {
+                for (int i = 0; i < currentMovies.size(); i++)
+                    Log.v(TAG, "Movie[" + i + "]: " + currentMovies.get(i).getMovieName() + "\n");
+            }
         }
 
         setupViewAfterLoading();
